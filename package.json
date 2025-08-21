@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npx prisma generate",
-    "start": "next start",
+    "build": "npx prisma generate && next build",
+    "start": "npm run db:deploy && next start",
     "lint": "next lint",
     "postinstall": "npx prisma generate",
-    "db:migrate": "npx prisma migrate deploy",
+    "db:deploy": "npx prisma migrate deploy",
     "db:seed": "npx prisma db seed"
   },
   "dependencies": {
