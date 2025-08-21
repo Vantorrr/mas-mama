@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
-    "start": "npm run db:deploy && next start",
+    "start": "npm run db:resolve && npm run db:deploy && next start",
     "lint": "next lint",
     "postinstall": "npx prisma generate",
+    "db:resolve": "sh -c 'npx prisma migrate resolve --rolled-back 20250821_init || true'",
     "db:deploy": "npx prisma migrate deploy",
     "db:seed": "npx prisma db seed"
   },
