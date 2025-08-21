@@ -9,27 +9,17 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const products = await prisma.product.findMany({
-    include: { images: { orderBy: { sortOrder: "asc" } } },
-    orderBy: { createdAt: "desc" },
-    take: 12,
-  });
-
-  // Получаем настройки обложек
-  let homepageConfig;
+  let products = [];
+  
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'}/api/admin/homepage`);
-    homepageConfig = await response.json();
+    products = await prisma.product.findMany({
+      include: { images: { orderBy: { sortOrder: "asc" } } },
+      orderBy: { createdAt: "desc" },
+      take: 12,
+    });
   } catch (error) {
-    homepageConfig = {
-      heroImage: '/logo.jpg',
-      blocks: {
-        novinkiFoto: '/logo.jpg',
-        kolyeFoto: '/logo.jpg',
-        brasletyFoto: '/logo.jpg',
-        medalonyFoto: '/logo.jpg'
-      }
-    };
+    console.log('DB not available, using mock data');
+    // Заглушки если база не работает
   }
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
