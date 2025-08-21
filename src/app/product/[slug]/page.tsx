@@ -7,8 +7,13 @@ import AddToCartButton from "@/components/AddToCartButton";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const products = await prisma.product.findMany({ select: { slug: true } });
-  return products.map((p) => ({ slug: p.slug }));
+  try {
+    const products = await prisma.product.findMany({ select: { slug: true } });
+    return products.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    console.log('DB not available during build, skipping static generation');
+    return [];
+  }
 }
 
 export default async function ProductPage({ params }: Props) {

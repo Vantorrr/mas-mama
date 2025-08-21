@@ -12,7 +12,11 @@ export default async function AdminHome() {
   const products = await prisma.product.findMany({ 
     orderBy: { createdAt: "desc" }, 
     take: 10,
-    include: { images: true }
+    include: { 
+      images: true, 
+      category: true, 
+      subcategory: true 
+    }
   });
   
   const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
