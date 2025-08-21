@@ -1,15 +1,11 @@
-import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { Search, Filter, Grid, List, Heart, Star } from "lucide-react";
 import Header from "@/components/Header";
-import AddToCartButton from "@/components/AddToCartButton";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default function CatalogPage() {
-  // Заглушки для сборки
-  const products: any[] = [];
 
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">

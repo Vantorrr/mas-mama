@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Plus, Package, Settings, BarChart3, Edit, Eye } from "lucide-react";
 import Image from "next/image";
@@ -8,9 +7,21 @@ import AdminLogout from "@/components/AdminLogout";
 
 export const revalidate = 0;
 
+interface Product {
+  id: number;
+  name: string;
+  sku: string;
+  priceCents: number;
+  images: any[];
+  category?: { name: string };
+  subcategory?: { name: string };
+  inStock: boolean;
+  slug: string;
+}
+
 export default function AdminHome() {
   // Заглушки для сборки
-  const products: any[] = [];
+  const products: Product[] = [];
   const categories: any[] = [];
   const totalProducts = 0;
 

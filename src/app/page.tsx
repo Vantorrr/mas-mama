@@ -1,16 +1,11 @@
 import Image from "next/image";
-import { Star, Heart, ShoppingBag } from "lucide-react";
+import { Heart, Star, ShoppingBag } from "lucide-react";
 import Header from "@/components/Header";
-import AnimatedButton from "@/components/AnimatedButton";
-import AddToCartButton from "@/components/AddToCartButton";
 import CategoryBlocks from "@/components/CategoryBlocks";
-import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
 export default function Home() {
-  // Используем заглушки для стабильной сборки
-  const products: any[] = [];
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
       <Header />
@@ -38,36 +33,7 @@ export default function Home() {
             <div className="w-20 h-1 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] rounded-full mx-auto"></div>
           </div>
           
-          {/* Горизонтальная прокрутка товаров */}
-          <div className="relative">
-            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-              {/* ЗАГЛУШКИ пока база не работает */}
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-64 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 snap-start"
-                >
-                  <div className="relative aspect-square overflow-hidden rounded-t-2xl">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] flex items-center justify-center">
-                      <span className="text-[#8b7355] font-bold">Браслет {index + 1}</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-[#6b4e3d] mb-2">Браслет {index + 1}</h3>
-                    <p className="text-lg font-bold text-[#6b4e3d] mb-3">3 500 ₽</p>
-                    <div className="flex gap-2">
-                      <button className="flex-1 text-center py-2 border border-[#3c2415] text-[#3c2415] rounded-lg text-sm hover:bg-[#3c2415] hover:text-white transition-all">
-                        Подробнее
-                      </button>
-                      <button className="flex-1 py-2 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] text-white rounded-lg text-sm hover:from-[#4a2e1a] hover:to-[#3a3a3a] transition-all">
-                        В корзину
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <p className="text-center text-[#8b7355]">Новинки будут отображаться после добавления товаров в админке</p>
         </div>
       </section>
 
