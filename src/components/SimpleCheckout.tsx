@@ -112,7 +112,7 @@ export default function SimpleCheckout({ isOpen, onClose }: SimpleCheckoutProps)
         ) : (
         <>
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] rounded-full flex items-center justify-center mx-auto mb-4">
             <ShoppingBag className="text-white" size={24} />
           </div>
           <h2 className="text-2xl font-bold text-[#6b4e3d]">Оформить заказ</h2>
@@ -182,8 +182,8 @@ export default function SimpleCheckout({ isOpen, onClose }: SimpleCheckoutProps)
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-500 text-white rounded-lg font-bold text-lg
-                     hover:from-amber-500 hover:to-yellow-600 disabled:opacity-50 transition-all"
+            className="w-full py-4 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] text-white rounded-lg font-bold text-lg
+                     hover:from-[#4a2e1a] hover:to-[#3a3a3a] disabled:opacity-50 transition-all"
           >
             {isSubmitting ? 'Отправляем...' : `Заказать за ${getTotalPrice().toLocaleString('ru-RU')} ₽`}
           </button>

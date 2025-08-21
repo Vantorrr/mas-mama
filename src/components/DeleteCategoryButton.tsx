@@ -12,7 +12,7 @@ export default function DeleteCategoryButton({ categoryId, categoryName }: Delet
   const router = useRouter();
 
   const handleDelete = async () => {
-    if (!confirm(`Удалить категорию "${categoryName}"? Все товары этой категории тоже будут удалены!`)) {
+    if (!confirm(`Удалить категорию "${categoryName}"?`)) {
       return;
     }
 
@@ -21,10 +21,12 @@ export default function DeleteCategoryButton({ categoryId, categoryName }: Delet
         method: 'DELETE',
       });
 
+      const result = await response.json();
+
       if (response.ok) {
         router.refresh();
       } else {
-        alert('Ошибка при удалении категории');
+        alert(result.error || 'Ошибка при удалении категории');
       }
     } catch (error) {
       alert('Ошибка при удалении категории');

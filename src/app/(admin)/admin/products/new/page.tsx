@@ -14,7 +14,7 @@ export default function NewProductPage() {
     sku: '',
     price: '',
     shortDescription: '',
-    categoryId: '1', // Браслеты по умолчанию
+    categoryId: '', // Пустое значение по умолчанию
     subcategoryId: '',
     inStock: true,
   });
@@ -140,9 +140,10 @@ export default function NewProductPage() {
                   onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
                   className="w-full px-4 py-3 border border-[#e8dcc6] rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
                 >
+                  <option value="">Выберите категорию</option>
                   <option value="1">Браслеты</option>
-                  <option value="2">Ожерелье</option>
-                  <option value="3">Кулоны</option>
+                  <option value="2">Колье</option>
+                  <option value="3">Медальоны</option>
                 </select>
               </div>
             </div>

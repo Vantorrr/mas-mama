@@ -23,14 +23,14 @@ export default function Header() {
                   alt="masterskaya_mama" 
                   width={50} 
                   height={50} 
-                  className="rounded-full shadow-md ring-2 ring-[#f8f3ed] group-hover:ring-amber-400 transition-all duration-200" 
+                  className="rounded-full shadow-md ring-2 ring-[#f8f3ed] group-hover:ring-[#3c2415] transition-all duration-200" 
                 />
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center">
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-[#3c2415] to-[#2d2d2d] rounded-full flex items-center justify-center">
                   <Star size={10} className="text-white fill-white" />
                 </div>
               </div>
               <div className="hidden md:block">
-                <h1 className="text-xl font-semibold text-[#6b4e3d] tracking-tight group-hover:text-amber-600 transition-colors">
+                <h1 className="text-xl font-semibold text-[#6b4e3d] tracking-tight group-hover:text-[#3c2415] transition-colors">
                   masterskaya_mama
                 </h1>
                 <p className="text-xs text-[#8b7355] font-light">Авторские украшения</p>

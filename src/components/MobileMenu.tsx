@@ -15,21 +15,19 @@ const menuItems = [
     ]
   },
   {
-    name: 'Ожерелье',
-    href: '/catalog?category=ozherelya',
+    name: 'Колье',
+    href: '/catalog?category=kolye',
     subcategories: [
-      { name: 'Серебро', href: '/catalog?category=ozherelya&sub=serebro' },
-      { name: 'Золото', href: '/catalog?category=ozherelya&sub=zoloto' },
-      { name: 'Жемчуг', href: '/catalog?category=ozherelya&sub=zhemchug' },
+      { name: 'На борные камни', href: '/catalog?category=kolye&sub=bornye-kamni' },
+      { name: 'Монокамни', href: '/catalog?category=kolye&sub=monokamni' },
     ]
   },
   {
-    name: 'Кулоны',
-    href: '/catalog?category=kulony',
+    name: 'Медальоны',
+    href: '/catalog?category=medalony',
     subcategories: [
-      { name: 'Серебро', href: '/catalog?category=kulony&sub=serebro' },
-      { name: 'Золото', href: '/catalog?category=kulony&sub=zoloto' },
-      { name: 'Камни', href: '/catalog?category=kulony&sub=kamni' },
+      { name: 'На борные камни', href: '/catalog?category=medalony&sub=bornye-kamni' },
+      { name: 'Монокамни', href: '/catalog?category=medalony&sub=monokamni' },
     ]
   },
   { name: 'Афиша', href: '/afisha' },

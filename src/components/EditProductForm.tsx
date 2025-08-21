@@ -224,15 +224,37 @@ export default function EditProductForm({ product, categories }: EditProductForm
                       height={200}
                       className="w-full aspect-square object-cover rounded-lg border border-[#e8dcc6]"
                     />
+                    
+                    {/* Кнопка удаления */}
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      title="Удалить фото"
                     >
                       <X size={14} />
                     </button>
+                    
+                    {/* Кнопка "Сделать обложкой" */}
+                    {index !== 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newImages = [...images];
+                          const [movedImage] = newImages.splice(index, 1);
+                          newImages.unshift(movedImage);
+                          setImages(newImages);
+                        }}
+                        className="absolute -top-2 -left-2 p-1 bg-blue-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-blue-600 text-xs"
+                        title="Сделать обложкой"
+                      >
+                        ★
+                      </button>
+                    )}
+                    
+                    {/* Индикатор обложки */}
                     {index === 0 && (
-                      <div className="absolute bottom-2 left-2 bg-amber-500 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute bottom-2 left-2 bg-amber-500 text-white text-xs px-2 py-1 rounded font-medium">
                         Обложка
                       </div>
                     )}

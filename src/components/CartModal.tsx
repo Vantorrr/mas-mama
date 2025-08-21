@@ -125,8 +125,8 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
             <div className="space-y-2">
               <button 
                 onClick={() => setShowCheckout(true)}
-                className="w-full py-3 bg-gradient-to-r from-amber-400 to-yellow-500 text-white rounded-lg font-medium 
-                         hover:from-amber-500 hover:to-yellow-600 transition-all"
+                className="w-full py-3 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] text-white rounded-lg font-medium 
+                         hover:from-[#4a2e1a] hover:to-[#3a3a3a] transition-all"
               >
                 Оформить заказ
               </button>

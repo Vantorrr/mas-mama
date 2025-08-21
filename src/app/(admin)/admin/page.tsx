@@ -107,6 +107,13 @@ export default async function AdminHome() {
                 <BarChart3 size={18} />
                 Управление категориями
               </Link>
+              <Link 
+                href="/admin/homepage" 
+                className="flex items-center gap-3 p-3 border-2 border-[#6b4e3d] text-[#6b4e3d] rounded-lg hover:bg-[#6b4e3d] hover:text-white transition-all"
+              >
+                <Settings size={18} />
+                Настройки главной страницы
+              </Link>
             </div>
           </div>
         </div>

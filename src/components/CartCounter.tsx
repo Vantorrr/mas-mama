@@ -18,8 +18,8 @@ export default function CartCounter() {
     <>
       <button 
         onClick={() => setIsCartOpen(true)}
-        className="relative p-2.5 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 
-                         hover:from-amber-500 hover:to-yellow-600 shadow-lg hover:shadow-xl 
+        className="relative p-2.5 rounded-full bg-gradient-to-br from-[#3c2415] to-[#2d2d2d] 
+                         hover:from-[#4a2e1a] hover:to-[#3a3a3a] shadow-lg hover:shadow-xl 
                          transform hover:scale-105 transition-all group"
       >
         <ShoppingBag size={18} className="text-white" />

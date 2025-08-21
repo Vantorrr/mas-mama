@@ -6,7 +6,8 @@
   --warm-beige: #f8f3ed;
   --soft-brown: #8b7355;
   --rich-brown: #6b4e3d;
-  --accent-gold: #d4af37;
+  --dark-chocolate: #3c2415;
+  --graphite: #2d2d2d;
   --shadow: rgba(139, 115, 85, 0.1);
 }
 
@@ -96,8 +97,8 @@ body {
 
 /* Стили кнопок */
 .btn-primary {
-  @apply bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-6 py-3 rounded-xl font-medium 
-         hover:from-amber-600 hover:to-yellow-600 transform hover:scale-105 transition-all duration-300 
+  @apply bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] text-white px-6 py-3 rounded-xl font-medium 
+         hover:from-[#4a2e1a] hover:to-[#3a3a3a] transform hover:scale-105 transition-all duration-300 
          shadow-lg hover:shadow-xl relative overflow-hidden;
 }
 
@@ -146,7 +147,7 @@ body {
 
 /* Анимированные градиенты */
 .gradient-animated {
-  background: linear-gradient(-45deg, #f59e0b, #eab308, #f97316, #fb923c);
+  background: linear-gradient(-45deg, #3c2415, #2d2d2d, #4a2e1a, #3a3a3a);
   background-size: 400% 400%;
   animation: gradientShift 4s ease infinite;
 }
