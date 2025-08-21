@@ -75,7 +75,7 @@ export default function SimpleCheckout({ isOpen, onClose }: SimpleCheckoutProps)
       } else {
         alert('Ошибка при оформлении заказа');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка сети');
     } finally {
       setIsSubmitting(false);
