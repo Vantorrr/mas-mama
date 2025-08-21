@@ -5,6 +5,8 @@ import AnimatedButton from "@/components/AnimatedButton";
 import AddToCartButton from "@/components/AddToCartButton";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const products = await prisma.product.findMany({
     include: { images: { orderBy: { sortOrder: "asc" } } },

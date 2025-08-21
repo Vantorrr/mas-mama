@@ -6,15 +6,10 @@ import AddToCartButton from "@/components/AddToCartButton";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  try {
-    const products = await prisma.product.findMany({ select: { slug: true } });
-    return products.map((p) => ({ slug: p.slug }));
-  } catch (error) {
-    console.log('DB not available during build, skipping static generation');
-    return [];
-  }
-}
+// Отключаем статическую генерацию для Railway
+// export async function generateStaticParams() {
+//   return [];
+// }
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
