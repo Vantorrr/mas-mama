@@ -26,7 +26,7 @@ export default function SeedDataButton() {
       } else {
         alert(`Ошибка: ${result.error || 'Не удалось добавить демо-товары'}`);
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при добавлении демо-товаров');
     } finally {
       setIsLoading(false);

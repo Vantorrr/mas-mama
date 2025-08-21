@@ -81,7 +81,7 @@ export default function EditProductForm({ product, categories }: EditProductForm
       } else {
         alert('Ошибка при обновлении товара');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при обновлении товара');
     } finally {
       setIsSubmitting(false);

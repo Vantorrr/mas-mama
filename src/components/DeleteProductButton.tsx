@@ -30,7 +30,7 @@ export default function DeleteProductButton({ productId, productName }: DeletePr
       } else {
         alert('Ошибка при удалении товара');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при удалении товара');
     }
   };
