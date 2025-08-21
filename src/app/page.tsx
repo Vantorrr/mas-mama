@@ -8,19 +8,9 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
-  let products = [];
-  
-  try {
-    products = await prisma.product.findMany({
-      include: { images: { orderBy: { sortOrder: "asc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 12,
-    });
-  } catch (error) {
-    console.log('DB not available, using mock data');
-    // Заглушки если база не работает
-  }
+export default function Home() {
+  // Используем заглушки для стабильной сборки
+  const products: any[] = [];
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
       <Header />
