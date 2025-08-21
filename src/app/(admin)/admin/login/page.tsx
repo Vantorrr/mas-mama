@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Lock, User, Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -128,12 +129,12 @@ export default function AdminLoginPage() {
 
         {/* Ссылка на сайт */}
         <div className="text-center mt-6">
-          <a 
+          <Link 
             href="/" 
             className="text-[#8b7355] hover:text-[#6b4e3d] transition-colors text-sm"
           >
             ← Вернуться на сайт
-          </a>
+          </Link>
         </div>
       </div>
     </main>

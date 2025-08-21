@@ -5,6 +5,15 @@ import { createPortal } from 'react-dom';
 import { X, ShoppingBag, User, Phone, CheckCircle } from 'lucide-react';
 import { useCartStore } from './CartStore';
 
+type ContactMethod = 'phone' | 'whatsapp' | 'telegram' | 'email';
+
+const CONTACT_OPTIONS: Array<{ key: ContactMethod; label: string }> = [
+  { key: 'phone', label: 'Телефон' },
+  { key: 'whatsapp', label: 'WhatsApp' },
+  { key: 'telegram', label: 'Telegram' },
+  { key: 'email', label: 'Email' },
+];
+
 interface SimpleCheckoutProps {
   isOpen: boolean;
   onClose: () => void;
@@ -13,7 +22,7 @@ interface SimpleCheckoutProps {
 export default function SimpleCheckout({ isOpen, onClose }: SimpleCheckoutProps) {
   const { items, getTotalPrice, clearCart } = useCartStore();
   const [name, setName] = useState('');
-  const [contactMethod, setContactMethod] = useState<'phone'|'whatsapp'|'telegram'|'email'>('phone');
+  const [contactMethod, setContactMethod] = useState<ContactMethod>('phone');
   const [contactValue, setContactValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -129,19 +138,14 @@ export default function SimpleCheckout({ isOpen, onClose }: SimpleCheckoutProps)
           <fieldset>
             <legend className="block text-sm font-medium text-[#6b4e3d] mb-2">Удобный способ связи</legend>
             <div className="grid grid-cols-2 gap-2 mb-3">
-              {[
-                { key: 'phone', label: 'Телефон' },
-                { key: 'whatsapp', label: 'WhatsApp' },
-                { key: 'telegram', label: 'Telegram' },
-                { key: 'email', label: 'Email' },
-              ].map(opt => (
+              {CONTACT_OPTIONS.map(opt => (
                 <label key={opt.key} className={`flex items-center gap-2 rounded-lg border-2 px-3 py-2 cursor-pointer ${contactMethod===opt.key ? 'border-amber-400' : 'border-[#e8dcc6]'}`}>
                   <input
                     type="radio"
                     name="contactMethod"
                     className="accent-amber-500"
-                    checked={contactMethod === (opt.key as any)}
-                    onChange={() => setContactMethod(opt.key as any)}
+                    checked={contactMethod === opt.key}
+                    onChange={() => setContactMethod(opt.key)}
                   />
                   <span className="text-sm text-[#6b4e3d]">{opt.label}</span>
                 </label>
