@@ -1,11 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Heart, Star, ShoppingBag } from "lucide-react";
 import Header from "@/components/Header";
 import CategoryBlocks from "@/components/CategoryBlocks";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export default function Home() {
+export default async function Home() {
+  const products = await prisma.product.findMany({
+    include: { images: true },
+    orderBy: { createdAt: "desc" },
+    take: 8,
+  });
+
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
       <Header />
@@ -32,8 +40,40 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-[#6b4e3d] mb-4">Новинки</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] rounded-full mx-auto"></div>
           </div>
-          
-          <p className="text-center text-[#8b7355]">Новинки будут отображаться после добавления товаров в админке</p>
+
+          <div className="overflow-x-auto">
+            <div className="flex gap-6 min-w-max">
+              {products.map((p) => {
+                const cover = p.images.find((i) => i.isCover) ?? p.images[0];
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/product/${p.slug}`}
+                    className="w-64 bg-white rounded-2xl shadow-md hover:shadow-2xl card-hover overflow-hidden flex-shrink-0"
+                  >
+                    <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] overflow-hidden">
+                      {cover && (
+                        <Image 
+                          src={cover.url} 
+                          alt={p.name} 
+                          fill 
+                          className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                        />
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-[#6b4e3d] mb-1 line-clamp-1">{p.name}</h3>
+                      <p className="text-sm text-[#8b7355] mb-2">Артикул: {p.sku}</p>
+                      <span className="text-lg font-bold text-[#6b4e3d]">{(p.priceCents / 100).toLocaleString("ru-RU")} ₽</span>
+                    </div>
+                  </Link>
+                );
+              })}
+              {products.length === 0 && (
+                <div className="text-center text-[#8b7355] w-full">Новинки появятся после добавления товаров в админке</div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 

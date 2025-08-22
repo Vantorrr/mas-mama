@@ -1,11 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Search, Filter, Grid, List, Heart, Star } from "lucide-react";
 import Header from "@/components/Header";
+import { prisma } from "@/lib/prisma";
+import AddToCartButton from "@/components/AddToCartButton";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default function CatalogPage() {
+export default async function CatalogPage() {
+  const products = await prisma.product.findMany({
+    include: { images: true },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
@@ -55,9 +62,9 @@ export default function CatalogPage() {
             {products.map((p) => {
               const cover = p.images.find((i) => i.isCover) ?? p.images[0];
               return (
-                <a 
-                  key={p.id} 
-                  href={`/product/${p.slug}`} 
+                <Link
+                  key={p.id}
+                  href={`/product/${p.slug}`}
                   className="group bg-white rounded-2xl shadow-md hover:shadow-2xl card-hover overflow-hidden"
                 >
                   <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] overflow-hidden">
@@ -79,9 +86,7 @@ export default function CatalogPage() {
                     </div>
                     
                     {/* Быстрый просмотр */}
-                    <button className="absolute inset-x-4 bottom-4 py-2 bg-white/95 text-[#6b4e3d] rounded-lg font-medium 
-                                     opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 
-                                     transition-all hover:bg-white text-sm">
+                    <button className="absolute inset-x-4 bottom-4 py-2 bg-white/95 text-[#6b4e3d] rounded-lg font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all hover:bg-white text-sm">
                       Быстрый просмотр
                     </button>
                   </div>
@@ -110,13 +115,12 @@ export default function CatalogPage() {
 
                     {/* Кнопки действий */}
                     <div className="flex gap-2">
-                      <a
+                      <Link
                         href={`/product/${p.slug}`}
-                        className="flex-1 text-center py-2 border border-amber-400 text-amber-600 rounded-lg font-medium text-sm
-                                 hover:bg-amber-400 hover:text-white transform hover:scale-105 transition-all duration-200"
+                        className="flex-1 text-center py-2 border border-amber-400 text-amber-600 rounded-lg font-medium text-sm hover:bg-amber-400 hover:text-white transform hover:scale-105 transition-all duration-200"
                       >
                         Подробнее
-                      </a>
+                      </Link>
                       <AddToCartButton 
                         productId={p.id}
                         productName={p.name}
@@ -127,7 +131,7 @@ export default function CatalogPage() {
                       />
                     </div>
                   </div>
-                </a>
+                </Link>
               );
             })}
           </div>
