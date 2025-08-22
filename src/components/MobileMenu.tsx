@@ -66,18 +66,18 @@ export default function MobileMenu() {
         style={{ backgroundColor: '#f5e6d3', opacity: 1 }}
       >
         <div className="h-full" style={{ backgroundColor: '#f5e6d3' }}>
-          {/* Header с логотипом */}
+          {/* Header */}
           <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="p-2 rounded-full hover:bg-[#f8f3ed] transition-colors"
-            >
-              <X size={20} className="text-[#8b7355]" />
-            </button>
-          </div>
-          
-          <div className="p-6">
+              <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full hover:bg-[#f8f3ed] transition-colors"
+              >
+                <X size={20} className="text-[#8b7355]" />
+              </button>
+            </div>
+            
+            <div className="p-6">
 
           {/* Пункты меню */}
           <nav className="space-y-2">
@@ -134,8 +134,8 @@ export default function MobileMenu() {
               </a>
             </div>
           </div>
+            </div>
           </div>
-        </div>
       </div>
     </>
   );
