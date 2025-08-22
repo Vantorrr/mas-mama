@@ -37,111 +37,190 @@ const menuItems = [
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
-  
-  console.log('MobileMenu render, isOpen:', isOpen);
 
   return (
-    <>
+    <div>
       {/* Кнопка меню */}
       <button 
-        onClick={() => {
-          console.log('Menu button clicked');
-          setIsOpen(true);
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 16px',
+          borderRadius: '20px',
+          backgroundColor: '#f8f3ed',
+          border: 'none',
+          cursor: 'pointer'
         }}
-        className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#f8f3ed] hover:bg-[#f0e6d2] transition-colors group"
       >
-        <Menu size={18} className="text-[#6b4e3d] group-hover:text-[#8b7355]" />
-        <span className="text-sm font-medium text-[#6b4e3d] hidden sm:block">Меню</span>
+        <Menu size={18} style={{ color: '#6b4e3d' }} />
+        <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b4e3d' }}>Меню</span>
       </button>
 
-      {/* Overlay */}
+      {/* Затемнение */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        <div
           onClick={() => setIsOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 998
+          }}
         />
       )}
 
-      {/* Боковое меню */}
+      {/* Панель меню */}
       {isOpen && (
-        <div 
-          className="fixed top-0 left-0 h-full w-72 shadow-xl z-50"
-          style={{ 
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            height: '100vh',
+            width: '300px',
             backgroundColor: '#f5e6d3',
-            opacity: 1
+            zIndex: 999,
+            boxShadow: '2px 0 10px rgba(0,0,0,0.1)',
+            overflow: 'auto'
           }}
         >
-          {/* Header */}
-          <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
-            <button 
+          {/* Заголовок */}
+          <div
+            style={{
+              backgroundColor: 'white',
+              borderBottom: '1px solid #e8dcc6',
+              padding: '16px 24px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#6b4e3d', margin: 0 }}>
+              Меню
+            </h2>
+            <button
               onClick={() => setIsOpen(false)}
-              className="p-2 rounded-full hover:bg-[#f8f3ed] transition-colors"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '50%'
+              }}
             >
-              <X size={20} className="text-[#8b7355]" />
+              <X size={20} style={{ color: '#8b7355' }} />
             </button>
           </div>
-          
-          {/* Меню контент */}
-          <div className="p-6 overflow-y-auto h-[calc(100%-73px)]">
-            {/* Пункты меню */}
-            <nav className="space-y-2">
-              {menuItems.map((item) => (
-                <div key={item.name}>
-                  <div className="flex items-center justify-between">
-                    <Link 
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="flex-1 py-3 px-4 text-[#6b4e3d] hover:bg-white rounded-lg transition-all hover:shadow-sm font-medium"
+
+          {/* Содержимое */}
+          <div style={{ padding: '24px' }}>
+            {menuItems.map((item) => (
+              <div key={item.name} style={{ marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Link 
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      flex: 1,
+                      padding: '12px 16px',
+                      color: '#6b4e3d',
+                      textDecoration: 'none',
+                      borderRadius: '8px',
+                      fontWeight: '500',
+                      display: 'block'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = 'white';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                  {item.subcategories && (
+                    <button
+                      onClick={() => setOpenCategory(openCategory === item.name ? null : item.name)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '8px',
+                        borderRadius: '8px'
+                      }}
                     >
-                      {item.name}
-                    </Link>
-                    {item.subcategories && (
-                      <button
-                        onClick={() => setOpenCategory(openCategory === item.name ? null : item.name)}
-                        className="p-2 hover:bg-white rounded-lg transition-all hover:shadow-sm"
-                      >
-                        <ChevronRight 
-                          size={16} 
-                          className={`text-[#8b7355] transform transition-transform ${
-                            openCategory === item.name ? 'rotate-90' : ''
-                          }`} 
-                        />
-                      </button>
-                    )}
-                  </div>
-                  
-                  {/* Подкатегории */}
-                  {item.subcategories && openCategory === item.name && (
-                    <div className="ml-4 mt-2 space-y-1 border-l-2 border-[#f8f3ed]">
-                      {item.subcategories.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          onClick={() => setIsOpen(false)}
-                          className="block py-2 px-4 text-[#8b7355] hover:bg-[#f8f3ed] hover:text-[#6b4e3d] rounded-lg transition-colors text-sm"
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
-                    </div>
+                      <ChevronRight 
+                        size={16} 
+                        style={{ 
+                          color: '#8b7355',
+                          transform: openCategory === item.name ? 'rotate(90deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.2s'
+                        }} 
+                      />
+                    </button>
                   )}
                 </div>
-              ))}
-            </nav>
-
-            {/* Дополнительная информация */}
-            <div className="mt-12 pt-6 border-t border-[#f8f3ed]">
-              <div className="text-center">
-                <p className="text-sm text-[#8b7355] mb-2">Нужна помощь?</p>
-                <a href="tel:+79991234567" className="text-[#6b4e3d] font-medium">
-                  +7 (999) 123-45-67
-                </a>
+                
+                {/* Подкатегории */}
+                {item.subcategories && openCategory === item.name && (
+                  <div style={{ marginLeft: '16px', marginTop: '8px', borderLeft: '2px solid #f8f3ed' }}>
+                    {item.subcategories.map((sub) => (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        onClick={() => setIsOpen(false)}
+                        style={{
+                          display: 'block',
+                          padding: '8px 16px',
+                          color: '#8b7355',
+                          textDecoration: 'none',
+                          borderRadius: '8px',
+                          fontSize: '14px'
+                        }}
+                        onMouseOver={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f8f3ed';
+                          e.currentTarget.style.color = '#6b4e3d';
+                        }}
+                        onMouseOut={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = '#8b7355';
+                        }}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
+            ))}
+
+            {/* Контакты */}
+            <div
+              style={{
+                marginTop: '48px',
+                paddingTop: '24px',
+                borderTop: '1px solid #f8f3ed',
+                textAlign: 'center'
+              }}
+            >
+              <p style={{ fontSize: '14px', color: '#8b7355', marginBottom: '8px' }}>
+                Нужна помощь?
+              </p>
+              <a 
+                href="tel:+79991234567" 
+                style={{ color: '#6b4e3d', fontWeight: '500', textDecoration: 'none' }}
+              >
+                +7 (999) 123-45-67
+              </a>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
