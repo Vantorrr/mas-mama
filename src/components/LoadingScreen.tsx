@@ -28,7 +28,7 @@ export default function LoadingScreen() {
 
   return (
     <div className={`fixed inset-0 z-[9999] bg-[#fffbf7] flex flex-col items-center justify-center transition-opacity duration-500 ${
-      progress >= 100 ? 'opacity-0' : 'opacity-100'
+      progress >= 100 ? 'opacity-0 pointer-events-none' : 'opacity-100'
     }`}>
       {/* Логотип с анимацией */}
       <div className="relative mb-8">
