@@ -58,7 +58,7 @@ export default function MobileMenu() {
       )}
 
       {/* Боковое меню */}
-      <div className={`fixed top-0 left-0 h-full w-80 bg-white shadow-2xl border-r border-[#e8dcc6] z-70 transform transition-transform duration-300 ${
+      <div className={`fixed top-0 left-0 h-full w-80 bg-white/100 backdrop-blur-none shadow-2xl border-r border-[#e8dcc6] z-70 transform transition-transform duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="p-6">
