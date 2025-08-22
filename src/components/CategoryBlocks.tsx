@@ -14,8 +14,8 @@ export default function CategoryBlocks() {
   });
 
   useEffect(() => {
-    // Загружаем настройки обложек
-    fetch('/api/admin/homepage')
+    // Загружаем настройки обложек без кэша
+    fetch('/api/admin/homepage', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => setConfig(data))
       .catch(console.error);

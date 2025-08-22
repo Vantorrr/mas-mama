@@ -36,7 +36,7 @@ export async function GET() {
           medalony: normalizeBlock(blocks.medalony || blocks.medalonyFoto),
         },
       };
-      return NextResponse.json(normalized);
+      return NextResponse.json(normalized, { headers: { 'Cache-Control': 'no-store, must-revalidate' } });
     } catch (error) {
       // Если файла нет, возвращаем дефолтные настройки
       const defaultConfig = {
@@ -48,7 +48,7 @@ export async function GET() {
           medalony: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
         },
       };
-      return NextResponse.json(defaultConfig);
+      return NextResponse.json(defaultConfig, { headers: { 'Cache-Control': 'no-store, must-revalidate' } });
     }
   } catch (error) {
     return NextResponse.json({ error: 'Failed to get homepage config' }, { status: 500 });
