@@ -1,10 +1,14 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, Star } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import CartCounter from "./CartCounter";
 
 export default function Header() {
+  const router = useRouter();
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e8dcc6] shadow-sm">
       <div className="mx-auto max-w-7xl px-6 py-4">
@@ -21,14 +25,14 @@ export default function Header() {
               prefetch={false}
               className="flex items-center gap-4 group cursor-pointer"
               onClick={(e) => {
-                // fallback на случай, если клиентский роутер тормозит/заблокирован
-                const timer = setTimeout(() => {
+                e.preventDefault();
+                router.push('/');
+                // fallback на случай редких проблем с роутером
+                setTimeout(() => {
                   if (typeof window !== 'undefined' && window.location.pathname !== '/') {
                     window.location.assign('/');
                   }
-                }, 800);
-                // очистка, если переход сработал быстро
-                window.addEventListener('popstate', () => clearTimeout(timer), { once: true });
+                }, 500);
               }}
             >
               <div className="relative">
