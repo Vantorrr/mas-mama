@@ -59,15 +59,11 @@ export default function CategoryBlocks() {
           <Image key={`${s.url}-${i}`} src={s.url} alt={alt} fill className="object-contain bg-[#f8f3ed] absolute inset-0" style={{ objectPosition: `${s.x}% ${s.y}%`, opacity: i === index ? 1 : 0, transition: 'opacity 600ms ease-in-out' }} />
         ))}
         {slides?.length > 1 && (
-          <>
-            <button type="button" aria-label="Prev" onClick={(e) => { e.preventDefault(); prev(); }} className="absolute left-1 top-1/2 -translate-y-1/2 px-2 py-1 rounded-full bg-white/70 hover:bg-white shadow">‹</button>
-            <button type="button" aria-label="Next" onClick={(e) => { e.preventDefault(); next(); }} className="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 rounded-full bg-white/70 hover:bg-white shadow">›</button>
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
               {slides.map((_, i) => (
                 <button key={i} onClick={(e) => { e.preventDefault(); setIndex(i); }} className={`w-2 h-2 rounded-full ${i === index ? 'bg-[#3c2415]' : 'bg-white/70'}`} />
               ))}
             </div>
-          </>
         )}
       </div>
     );

@@ -56,26 +56,6 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
       ))}
 
       {slides.length > 1 && (
-        <>
-          {/* Навигация стрелками */}
-          <button
-            type="button"
-            aria-label="Предыдущий слайд"
-            onClick={prev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-full bg-white/70 hover:bg-white shadow"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            aria-label="Следующий слайд"
-            onClick={next}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-full bg-white/70 hover:bg-white shadow"
-          >
-            ›
-          </button>
-
-          {/* Точки-переключатели */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
             {slides.map((_, i) => (
               <button
@@ -86,7 +66,6 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
               />
             ))}
           </div>
-        </>
       )}
     </div>
   );
