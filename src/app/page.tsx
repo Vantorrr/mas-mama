@@ -30,11 +30,9 @@ export default async function Home() {
       <Header />
 
       {/* Hero */}
-      <section className="py-20 px-6">
-        <div className="mx-auto max-w-2xl text-center">
+      <section className="py-8 px-6">
+        <div className="mx-auto max-w-7xl">
           <HeroCarousel slides={heroSlides} />
-          <h1 className="text-4xl font-bold text-[#6b4e3d] mb-4">masterskaya_mama</h1>
-          <p className="text-[#8b7355] text-lg">Авторские украшения ручной работы</p>
         </div>
       </section>
 

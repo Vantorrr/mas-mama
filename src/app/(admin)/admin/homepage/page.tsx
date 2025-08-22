@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Upload, Save, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Upload, Save, Image as ImageIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -26,27 +26,44 @@ export default function AdminHomepagePage() {
   }, []);
 
   const handleImageUpload = (blockKey: string, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          const imageData = e.target.result as string;
-          if (blockKey === 'hero') {
-            setConfig((prev: any) => ({
-              ...prev,
-              hero: { slides: [{ url: imageData, x: 50, y: 50 }] },
-            }));
-          } else {
-            setConfig((prev: any) => ({
-              ...prev,
-              blocks: { ...prev.blocks, [blockKey]: { slides: [{ url: imageData, x: 50, y: 50 }] } }
-            }));
-          }
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length === 0) return;
+    Promise.all(
+      files.map(
+        (file) =>
+          new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => resolve(String(ev.target?.result || ''));
+            reader.readAsDataURL(file);
+          })
+      )
+    ).then((images) => {
+      if (blockKey === 'hero') {
+        setConfig((prev: any) => ({
+          ...prev,
+          hero: {
+            slides: [
+              ...(prev.hero?.slides || []),
+              ...images.map((url) => ({ url, x: 50, y: 50 })),
+            ],
+          },
+        }));
+      } else {
+        setConfig((prev: any) => ({
+          ...prev,
+          blocks: {
+            ...prev.blocks,
+            [blockKey]: {
+              slides: [
+                ...((prev.blocks?.[blockKey]?.slides) || []),
+                ...images.map((url) => ({ url, x: 50, y: 50 })),
+              ],
+            },
+          },
+        }));
+      }
+      e.target.value = '';
+    });
   };
 
   const onSetFocal = (blockKey: string, e: React.MouseEvent<HTMLDivElement>) => {
@@ -55,7 +72,7 @@ export default function AdminHomepagePage() {
     const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
     if (blockKey === 'hero') {
       setConfig((prev: any) => {
-        const slides = prev.hero.slides ? [...prev.hero.slides] : [{ url: prev.heroImage, x: 50, y: 50 }];
+        const slides = prev.hero.slides ? [...prev.hero.slides] : [{ url: '/logo.jpg', x: 50, y: 50 }];
         slides[0] = { ...slides[0], x, y };
         return { ...prev, hero: { slides } };
       });
@@ -65,6 +82,23 @@ export default function AdminHomepagePage() {
         slides[0] = { ...slides[0], x, y };
         return { ...prev, blocks: { ...prev.blocks, [blockKey]: { slides } } };
       });
+    }
+  };
+
+  const removeSlide = (blockKey: string, index: number) => {
+    if (blockKey === 'hero') {
+      setConfig((prev: any) => ({
+        ...prev,
+        hero: { slides: (prev.hero?.slides || []).filter((_: any, i: number) => i !== index) },
+      }));
+    } else {
+      setConfig((prev: any) => ({
+        ...prev,
+        blocks: {
+          ...prev.blocks,
+          [blockKey]: { slides: (prev.blocks?.[blockKey]?.slides || []).filter((_: any, i: number) => i !== index) },
+        },
+      }));
     }
   };
 
@@ -91,7 +125,7 @@ export default function AdminHomepagePage() {
     }
   };
 
-  const ImageUploadBlock = ({ title, blockKey, current }: { title: string, blockKey: string, current: { url: string, x: number, y: number } }) => (
+  const ImageUploadBlock = ({ title, blockKey, current, slides }: { title: string, blockKey: string, current: { url: string, x: number, y: number }, slides: { url: string, x: number, y: number }[] }) => (
     <div className="bg-white rounded-2xl p-6 shadow-md">
       <h3 className="text-lg font-semibold text-[#6b4e3d] mb-4">{title}</h3>
       
@@ -102,16 +136,31 @@ export default function AdminHomepagePage() {
         </div>
       </div>
 
+      {/* Превью слайдов и удаление */}
+      {slides.length > 0 && (
+        <div className="grid grid-cols-4 gap-3 mb-4">
+          {slides.map((s, i) => (
+            <div key={i} className="relative aspect-square rounded-lg overflow-hidden border">
+              <Image src={s.url} alt={`${title} ${i + 1}`} fill className="object-cover" />
+              <button type="button" onClick={() => removeSlide(blockKey, i)} className="absolute top-1 right-1 p-1 bg-white/90 rounded-full shadow hover:bg-white">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <label className="block w-full">
         <input
           type="file"
           accept="image/*"
+          multiple
           onChange={(e) => handleImageUpload(blockKey, e)}
           className="hidden"
         />
         <div className="border-2 border-dashed border-[#e8dcc6] rounded-lg p-4 text-center hover:border-[#3c2415] transition-colors cursor-pointer">
           <Upload size={24} className="mx-auto text-[#8b7355] mb-2" />
-          <p className="text-sm text-[#6b4e3d] font-medium">Загрузить новое фото</p>
+          <p className="text-sm text-[#6b4e3d] font-medium">Загрузить фото (можно несколько)</p>
         </div>
       </label>
     </div>
@@ -139,14 +188,14 @@ export default function AdminHomepagePage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           
           {/* Hero изображение */}
-          <ImageUploadBlock title="Hero-изображение (главный логотип)" blockKey="hero" current={config.hero.slides[0]} />
+          <ImageUploadBlock title="Hero-изображение (главный логотип)" blockKey="hero" current={config.hero.slides[0]} slides={config.hero.slides} />
 
           {/* Блоки категорий */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageUploadBlock title="Обложка блока 'Новинки'" blockKey="novinki" current={config.blocks.novinki.slides[0]} />
-            <ImageUploadBlock title="Обложка блока 'Колье'" blockKey="kolye" current={config.blocks.kolye.slides[0]} />
-            <ImageUploadBlock title="Обложка блока 'Браслеты'" blockKey="braslety" current={config.blocks.braslety.slides[0]} />
-            <ImageUploadBlock title="Обложка блока 'Медальоны'" blockKey="medalony" current={config.blocks.medalony.slides[0]} />
+            <ImageUploadBlock title="Обложка блока 'Новинки'" blockKey="novinki" current={config.blocks.novinki.slides[0]} slides={config.blocks.novinki.slides} />
+            <ImageUploadBlock title="Обложка блока 'Колье'" blockKey="kolye" current={config.blocks.kolye.slides[0]} slides={config.blocks.kolye.slides} />
+            <ImageUploadBlock title="Обложка блока 'Браслеты'" blockKey="braslety" current={config.blocks.braslety.slides[0]} slides={config.blocks.braslety.slides} />
+            <ImageUploadBlock title="Обложка блока 'Медальоны'" blockKey="medalony" current={config.blocks.medalony.slides[0]} slides={config.blocks.medalony.slides} />
           </div>
 
           {/* Кнопка сохранения */}

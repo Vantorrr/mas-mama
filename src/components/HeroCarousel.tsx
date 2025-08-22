@@ -17,7 +17,7 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
   const current = slides[Math.min(index, slides.length - 1)];
 
   return (
-    <div className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] shadow-md">
+    <div className="relative w-full h-[56vh] md:h-[68vh] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] shadow-md">
       {current && (
         <Image src={current.url} alt="hero" fill className="object-cover" style={{ objectPosition: `${current.x}% ${current.y}%` }} />
       )}
