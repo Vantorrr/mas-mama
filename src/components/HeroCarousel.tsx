@@ -1,12 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Slide = { url: string; x: number; y: number };
 
 export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Slide[]; intervalMs?: number }) {
   const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (!slides || slides.length <= 1) return;
@@ -14,8 +15,22 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
     return () => clearInterval(id);
   }, [slides, intervalMs]);
 
+  const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
+  const next = () => setIndex((i) => (i + 1) % slides.length);
+
   return (
-    <div className="relative w-full h-[56vh] md:h-[68vh] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] shadow-md">
+    <div
+      className="relative w-full h-[56vh] md:h-[68vh] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] shadow-md select-none"
+      onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchStartX.current == null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(dx) > 50) {
+          dx > 0 ? prev() : next();
+        }
+        touchStartX.current = null;
+      }}
+    >
       {/* Слои со слайдами, мягкое перекрытие */}
       {slides.map((s, i) => (
         <div
@@ -41,11 +56,37 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
       ))}
 
       {slides.length > 1 && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-          {slides.map((_, i) => (
-            <div key={i} className={`w-2 h-2 rounded-full ${i === index ? 'bg-[#3c2415]' : 'bg-white/70'}`} />
-          ))}
-        </div>
+        <>
+          {/* Навигация стрелками */}
+          <button
+            type="button"
+            aria-label="Предыдущий слайд"
+            onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-full bg-white/70 hover:bg-white shadow"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label="Следующий слайд"
+            onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-full bg-white/70 hover:bg-white shadow"
+          >
+            ›
+          </button>
+
+          {/* Точки-переключатели */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Слайд ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={`w-2 h-2 rounded-full ${i === index ? 'bg-[#3c2415]' : 'bg-white/70'}`}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
