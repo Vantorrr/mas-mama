@@ -14,7 +14,12 @@ type Props = { params: Promise<{ slug: string }> };
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
   const product = await prisma.product.findUnique({
-    where: { slug },
+    where: { 
+      OR: [
+        { slug: slug },
+        { sku: slug }
+      ]
+    },
     include: { images: { orderBy: { sortOrder: "asc" } }, category: true, subcategory: true },
   });
   if (!product) return notFound();
