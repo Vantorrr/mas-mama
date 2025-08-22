@@ -29,6 +29,7 @@ export default function CategoryBlocks() {
   const Slides = ({ slides, alt }: { slides: any[]; alt: string }) => {
     const [index, setIndex] = useState(0);
     const timerRef = useRef<number | null>(null);
+    const touchStartX = useRef<number | null>(null);
 
     // Автопрокрутка
     useEffect(() => {
@@ -38,18 +39,35 @@ export default function CategoryBlocks() {
       return () => { if (timerRef.current) window.clearInterval(timerRef.current); };
     }, [slides]);
 
-    const current = slides?.[index] || slides?.[0];
+    const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
+    const next = () => setIndex((i) => (i + 1) % slides.length);
+
     return (
-      <div className="relative w-full h-full">
+      <div
+        className="relative w-full h-full select-none"
+        onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          if (touchStartX.current == null) return;
+          const dx = e.changedTouches[0].clientX - touchStartX.current;
+          if (Math.abs(dx) > 40) {
+            dx > 0 ? prev() : next();
+          }
+          touchStartX.current = null;
+        }}
+      >
         {slides?.map((s, i) => (
-          <Image key={`${s.url}-${i}`} src={s.url} alt={alt} fill className="object-contain bg-[#f8f3ed] absolute inset-0" style={{ objectPosition: `${s.x}% ${s.y}%`, opacity: i === index ? 1 : 0, transition: 'opacity 700ms ease-in-out' }} />
+          <Image key={`${s.url}-${i}`} src={s.url} alt={alt} fill className="object-contain bg-[#f8f3ed] absolute inset-0" style={{ objectPosition: `${s.x}% ${s.y}%`, opacity: i === index ? 1 : 0, transition: 'opacity 600ms ease-in-out' }} />
         ))}
         {slides?.length > 1 && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-            {slides.map((_, i) => (
-              <button key={i} onClick={(e) => { e.preventDefault(); setIndex(i); }} className={`w-1.5 h-1.5 rounded-full ${i === index ? 'bg-[#3c2415]' : 'bg-white/70'}`} />
-            ))}
-          </div>
+          <>
+            <button type="button" aria-label="Prev" onClick={(e) => { e.preventDefault(); prev(); }} className="absolute left-1 top-1/2 -translate-y-1/2 px-2 py-1 rounded-full bg-white/70 hover:bg-white shadow">‹</button>
+            <button type="button" aria-label="Next" onClick={(e) => { e.preventDefault(); next(); }} className="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 rounded-full bg-white/70 hover:bg-white shadow">›</button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {slides.map((_, i) => (
+                <button key={i} onClick={(e) => { e.preventDefault(); setIndex(i); }} className={`w-2 h-2 rounded-full ${i === index ? 'bg-[#3c2415]' : 'bg-white/70'}`} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     );
