@@ -65,3 +65,10 @@ model ProductImage {
 
   @@index([productId])
 }
+
+// Хранение настроек главной страницы (hero/обложки) в БД
+model HomepageConfig {
+  id        Int      @id @default(1)
+  data      Json     // структура { hero: { slides: [...] }, blocks: { ... } }
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
