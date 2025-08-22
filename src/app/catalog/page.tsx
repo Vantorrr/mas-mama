@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import AddToCartButton from '@/components/AddToCartButton';
 import { Filter, Grid, List, Search } from 'lucide-react';
 
 interface Product {
@@ -322,7 +323,7 @@ function CatalogContent() {
                 </div>
 
                 <div className="p-4 flex-1">
-                  <Link href={`/product/${product.sku.toLowerCase()}-${product.id}`}>
+                  <Link href={`/product/${encodeURIComponent(product.sku)}`}>
                     <h3 className="font-semibold text-[#6b4e3d] mb-2 hover:text-[#3c2415] transition-colors line-clamp-2">
                       {product.name}
                     </h3>
@@ -339,17 +340,18 @@ function CatalogContent() {
                     
                     <div className="flex gap-2">
                       <Link
-                        href={`/product/${product.sku.toLowerCase()}-${product.id}`}
+                        href={`/product/${encodeURIComponent(product.sku)}`}
                         className="px-3 py-2 text-sm border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-lg transition-colors"
                       >
                         Подробнее
                       </Link>
-                      <button
-                        className="px-3 py-2 text-sm bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-lg transition-colors"
-                        disabled={!product.inStock}
-                      >
-                        В корзину
-                      </button>
+                      <AddToCartButton
+                        productId={Number(product.id)}
+                        productName={product.name}
+                        productPrice={product.price}
+                        productImage={product.image}
+                        className="px-3 py-2 text-sm bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-lg transition-colors flex items-center gap-2"
+                      />
                     </div>
                   </div>
                 </div>
