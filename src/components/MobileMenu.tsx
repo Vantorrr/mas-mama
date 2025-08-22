@@ -52,7 +52,8 @@ export default function MobileMenu() {
       {/* Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-[9998]"
+          className="fixed inset-0 z-[9998]"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -62,9 +63,9 @@ export default function MobileMenu() {
         className={`fixed top-0 left-0 h-full w-72 shadow-xl z-[9999] transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ backgroundColor: '#ffffff', opacity: '1' }}
+        style={{ backgroundColor: '#f5e6d3', opacity: 1 }}
       >
-        <div className="h-full" style={{ backgroundColor: '#fdfcfb' }}>
+        <div className="h-full" style={{ backgroundColor: '#f5e6d3' }}>
           {/* Header с логотипом */}
           <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
