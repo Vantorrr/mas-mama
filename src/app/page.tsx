@@ -6,15 +6,29 @@ import CategoryBlocks from "@/components/CategoryBlocks";
 import { prisma } from "@/lib/prisma";
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrollReveal from "@/components/ScrollReveal";
+import { unstable_cache } from "next/cache";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const products = await prisma.product.findMany({
-    include: { images: true },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-  });
+  const getLatest = unstable_cache(
+    async () =>
+      prisma.product.findMany({
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          sku: true,
+          priceCents: true,
+          images: { select: { url: true, isCover: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 8,
+      }),
+    ["home-latest"],
+    { revalidate: 60 }
+  );
+  const products = await getLatest();
 
   // Читаем hero слайды из БД (HomepageConfig)
   let heroSlides: { url: string; x: number; y: number }[] = [{ url: '/logo.jpg', x: 50, y: 50 }];

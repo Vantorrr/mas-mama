@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import AddToCartButton from '@/components/AddToCartButton';
 import { Search } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
+import { unstable_cache } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,20 +16,41 @@ export default async function CatalogPage({ searchParams }: { searchParams: Sear
   const sub = typeof params?.sub === 'string' ? params.sub : undefined;
   const q = typeof params?.q === 'string' ? params.q : undefined;
 
-  const products = await prisma.product.findMany({
-    where: {
-      AND: [
-        category ? { category: { slug: category } } : {},
-        sub ? { subcategory: { slug: sub } } : {},
-        q ? { OR: [
-          { name: { contains: q, mode: 'insensitive' } },
-          { sku: { contains: q, mode: 'insensitive' } }
-        ] } : {},
-      ],
+  const getProducts = unstable_cache(
+    async (category?: string, sub?: string, q?: string) => {
+      return prisma.product.findMany({
+        where: {
+          AND: [
+            category ? { category: { slug: category } } : {},
+            sub ? { subcategory: { slug: sub } } : {},
+            q ? {
+              OR: [
+                { name: { contains: q, mode: 'insensitive' } },
+                { sku: { contains: q, mode: 'insensitive' } },
+              ],
+            } : {},
+          ],
+        },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          sku: true,
+          priceCents: true,
+          inStock: true,
+          images: { select: { url: true, isCover: true } },
+          category: { select: { name: true } },
+          subcategory: { select: { name: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 48,
+      });
     },
-    include: { images: true, category: true, subcategory: true },
-    orderBy: { createdAt: 'desc' },
-  });
+    ['catalog-products'],
+    { revalidate: 60 }
+  );
+
+  const products = await getProducts(category, sub, q);
 
   const heading = category ? (products[0]?.category?.name || 'Каталог украшений') : 'Каталог украшений';
 
