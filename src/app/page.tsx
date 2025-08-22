@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Star, ShoppingBag } from "lucide-react";
-import Header from "@/components/Header";
+// Header теперь рендерится глобально через layout
 import CategoryBlocks from "@/components/CategoryBlocks";
 import { prisma } from "@/lib/prisma";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -25,7 +25,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
-      <Header />
 
       {/* Hero */}
       <section className="py-8 px-6">
