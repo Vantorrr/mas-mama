@@ -32,7 +32,7 @@ export default function HeroCarousel({ slides, intervalMs = 3500 }: { slides: Sl
             alt="hero"
             fill
             priority={i === index}
-            className="object-cover"
+            className="object-contain"
             style={{ objectPosition: `${s.x}% ${s.y}%` }}
           />
           {/* Лёгкая затемняющая подложка для контраста */}

@@ -30,7 +30,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?new=true" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.novinki.slides[0].url} alt="Новинки" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.novinki.slides[0].x}% ${config.blocks.novinki.slides[0].y}%` }} />
+                <Image src={config.blocks.novinki?.slides?.[0]?.url || '/logo.jpg'} alt="Новинки" fill className="object-contain bg-[#f8f3ed]" style={{ objectPosition: `${config.blocks.novinki?.slides?.[0]?.x ?? 50}% ${config.blocks.novinki?.slides?.[0]?.y ?? 50}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Новинки</h3>
@@ -42,7 +42,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=kolye" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.kolye.slides[0].url} alt="Колье" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.kolye.slides[0].x}% ${config.blocks.kolye.slides[0].y}%` }} />
+                <Image src={config.blocks.kolye?.slides?.[0]?.url || '/logo.jpg'} alt="Колье" fill className="object-contain bg-[#f8f3ed]" style={{ objectPosition: `${config.blocks.kolye?.slides?.[0]?.x ?? 50}% ${config.blocks.kolye?.slides?.[0]?.y ?? 50}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Колье</h3>
@@ -54,7 +54,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=braslety" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.braslety.slides[0].url} alt="Браслеты" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.braslety.slides[0].x}% ${config.blocks.braslety.slides[0].y}%` }} />
+                <Image src={config.blocks.braslety?.slides?.[0]?.url || '/logo.jpg'} alt="Браслеты" fill className="object-contain bg-[#f8f3ed]" style={{ objectPosition: `${config.blocks.braslety?.slides?.[0]?.x ?? 50}% ${config.blocks.braslety?.slides?.[0]?.y ?? 50}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Браслеты</h3>
@@ -66,7 +66,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=medalony" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.medalony.slides[0].url} alt="Медальоны" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.medalony.slides[0].x}% ${config.blocks.medalony.slides[0].y}%` }} />
+                <Image src={config.blocks.medalony?.slides?.[0]?.url || '/logo.jpg'} alt="Медальоны" fill className="object-contain bg-[#f8f3ed]" style={{ objectPosition: `${config.blocks.medalony?.slides?.[0]?.x ?? 50}% ${config.blocks.medalony?.slides?.[0]?.y ?? 50}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Медальоны</h3>
