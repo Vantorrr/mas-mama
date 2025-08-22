@@ -59,7 +59,13 @@ export default function MobileMenu() {
 
       {/* Боковое меню */}
       {isOpen && (
-        <div className="fixed top-0 left-0 h-full w-72 bg-[#f5e6d3] shadow-xl z-50">
+        <div 
+          className="fixed top-0 left-0 h-full w-72 shadow-xl z-50"
+          style={{ 
+            backgroundColor: '#f5e6d3',
+            opacity: 1
+          }}
+        >
           {/* Header */}
           <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
