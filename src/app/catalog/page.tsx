@@ -191,7 +191,7 @@ function CatalogContent() {
                 placeholder="Поиск по названию или артикулу..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#e8dcc6] rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400"
+                className="w-full pl-10 pr-4 py-3 border border-[#e8dcc6] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6b4e3d]/50 focus:border-[#6b4e3d]"
               />
             </div>
 
@@ -208,13 +208,13 @@ function CatalogContent() {
               <div className="flex border border-[#e8dcc6] rounded-lg overflow-hidden">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-amber-400 text-white' : 'bg-white hover:bg-[#f8f3ed]'} transition-colors`}
+                  className={`p-2 ${viewMode === 'grid' ? 'bg-[#6b4e3d] text-white' : 'bg-white hover:bg-[#f8f3ed]'} transition-colors`}
                 >
                   <Grid size={18} />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 ${viewMode === 'list' ? 'bg-amber-400 text-white' : 'bg-white hover:bg-[#f8f3ed]'} transition-colors`}
+                  className={`p-2 ${viewMode === 'list' ? 'bg-[#6b4e3d] text-white' : 'bg-white hover:bg-[#f8f3ed]'} transition-colors`}
                 >
                   <List size={18} />
                 </button>
@@ -237,7 +237,7 @@ function CatalogContent() {
                           name="category"
                           checked={selectedCategory === key}
                           onChange={() => handleCategoryChange(key)}
-                          className="text-amber-400"
+                          className="text-[#6b4e3d]"
                         />
                         <span className="text-sm">{name}</span>
                       </label>
@@ -257,7 +257,7 @@ function CatalogContent() {
                             name="subcategory"
                             checked={selectedSubcategory === key}
                             onChange={() => handleSubcategoryChange(key)}
-                            className="text-amber-400"
+                            className="text-[#6b4e3d]"
                           />
                           <span className="text-sm">{name}</span>
                         </label>
@@ -288,7 +288,7 @@ function CatalogContent() {
             <p className="text-[#8b7355] mb-4">Попробуйте изменить параметры поиска</p>
             <button
               onClick={clearFilters}
-              className="px-6 py-3 bg-amber-400 hover:bg-amber-500 text-white rounded-xl font-semibold transition-colors"
+              className="px-6 py-3 bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-xl font-semibold transition-colors"
             >
               Сбросить фильтры
             </button>
@@ -340,12 +340,12 @@ function CatalogContent() {
                     <div className="flex gap-2">
                       <Link
                         href={`/product/${product.sku.toLowerCase()}-${product.id}`}
-                        className="px-3 py-2 text-sm border border-amber-400 text-amber-600 hover:bg-amber-400 hover:text-white rounded-lg transition-colors"
+                        className="px-3 py-2 text-sm border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-lg transition-colors"
                       >
                         Подробнее
                       </Link>
                       <button
-                        className="px-3 py-2 text-sm bg-amber-400 hover:bg-amber-500 text-white rounded-lg transition-colors"
+                        className="px-3 py-2 text-sm bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-lg transition-colors"
                         disabled={!product.inStock}
                       >
                         В корзину

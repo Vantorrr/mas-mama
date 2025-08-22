@@ -91,8 +91,8 @@ export default function AboutPage() {
               }
             ].map((value, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow">
-                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4">
-                  <value.icon className="text-amber-600" size={24} />
+                <div className="w-12 h-12 bg-[#f8f3ed] rounded-xl flex items-center justify-center mb-4">
+                  <value.icon className="text-[#6b4e3d]" size={24} />
                 </div>
                 <h3 className="font-semibold text-[#6b4e3d] mb-2">{value.title}</h3>
                 <p className="text-[#8b7355] text-sm leading-relaxed">{value.description}</p>
@@ -126,7 +126,7 @@ export default function AboutPage() {
               }
             ].map((process, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-amber-400 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                <div className="w-16 h-16 bg-[#6b4e3d] text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                   {process.step}
                 </div>
                 <h3 className="font-semibold text-[#6b4e3d] mb-3 text-lg">{process.title}</h3>
@@ -144,8 +144,8 @@ export default function AboutPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Phone className="text-amber-600" size={24} />
+              <div className="w-12 h-12 bg-[#f8f3ed] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Phone className="text-[#6b4e3d]" size={24} />
               </div>
               <h3 className="font-semibold text-[#6b4e3d] mb-2">Телефон</h3>
               <a href="tel:+79991234567" className="text-[#8b7355] hover:text-[#6b4e3d] transition-colors">
@@ -154,8 +154,8 @@ export default function AboutPage() {
             </div>
             
             <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Mail className="text-amber-600" size={24} />
+              <div className="w-12 h-12 bg-[#f8f3ed] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Mail className="text-[#6b4e3d]" size={24} />
               </div>
               <h3 className="font-semibold text-[#6b4e3d] mb-2">Email</h3>
               <a href="mailto:info@masterskaya-mama.ru" className="text-[#8b7355] hover:text-[#6b4e3d] transition-colors">
@@ -164,8 +164,8 @@ export default function AboutPage() {
             </div>
             
             <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <MapPin className="text-amber-600" size={24} />
+              <div className="w-12 h-12 bg-[#f8f3ed] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <MapPin className="text-[#6b4e3d]" size={24} />
               </div>
               <h3 className="font-semibold text-[#6b4e3d] mb-2">Адрес</h3>
               <p className="text-[#8b7355]">
@@ -182,13 +182,13 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="tel:+79991234567"
-                className="px-6 py-3 bg-amber-400 hover:bg-amber-500 text-white rounded-xl font-semibold transition-colors"
+                className="px-6 py-3 bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-xl font-semibold transition-colors"
               >
                 Позвонить
               </a>
               <a
                 href="mailto:info@masterskaya-mama.ru"
-                className="px-6 py-3 border border-amber-400 text-amber-600 hover:bg-amber-400 hover:text-white rounded-xl font-semibold transition-colors"
+                className="px-6 py-3 border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-xl font-semibold transition-colors"
               >
                 Написать
               </a>

@@ -128,7 +128,7 @@ export default function AfishaPage() {
                 onClick={() => handleCategoryFilter(category)}
                 className={`px-6 py-3 rounded-xl font-semibold transition-colors ${
                   selectedCategory === category
-                    ? 'bg-amber-400 text-white shadow-md'
+                    ? 'bg-[#6b4e3d] text-white shadow-md'
                     : 'bg-[#f8f3ed] text-[#6b4e3d] hover:bg-[#f0e6d2]'
                 }`}
               >
@@ -163,7 +163,7 @@ export default function AfishaPage() {
                   
                   {/* Бейджи */}
                   <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="px-3 py-1 bg-amber-400 text-white text-sm font-semibold rounded-full">
+                    <span className="px-3 py-1 bg-[#6b4e3d] text-white text-sm font-semibold rounded-full">
                       {event.category}
                     </span>
                     {isEventSoon(event.date) && (
@@ -226,7 +226,7 @@ export default function AfishaPage() {
                   {/* Кнопки действий */}
                   <div className="flex gap-3">
                     <button
-                      className="flex-1 px-4 py-3 border border-amber-400 text-amber-600 hover:bg-amber-400 hover:text-white rounded-xl font-semibold transition-colors"
+                      className="flex-1 px-4 py-3 border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-xl font-semibold transition-colors"
                     >
                       Подробнее
                     </button>
@@ -236,7 +236,7 @@ export default function AfishaPage() {
                       className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-colors ${
                         isEventFull(event)
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-amber-400 hover:bg-amber-500 text-white'
+                          : 'bg-[#6b4e3d] hover:bg-[#3c2415] text-white'
                       }`}
                     >
                       {event.price === 0 ? 'Записаться' : 'Купить билет'}
@@ -249,7 +249,7 @@ export default function AfishaPage() {
         )}
 
         {/* CTA секция */}
-        <section className="mt-16 bg-gradient-to-r from-amber-400 to-amber-500 rounded-2xl p-8 text-center text-white">
+        <section className="mt-16 bg-gradient-to-r from-[#6b4e3d] to-[#3c2415] rounded-2xl p-8 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
             Хотите провести свое мероприятие?
           </h2>
@@ -259,13 +259,13 @@ export default function AfishaPage() {
           <div className="flex flex-wrap justify-center gap-4">
             <a
               href="tel:+79991234567"
-              className="px-6 py-3 bg-white text-amber-600 hover:bg-amber-50 rounded-xl font-semibold transition-colors"
+              className="px-6 py-3 bg-white text-[#6b4e3d] hover:bg-[#f8f3ed] rounded-xl font-semibold transition-colors"
             >
               Обсудить мероприятие
             </a>
             <a
               href="mailto:info@masterskaya-mama.ru"
-              className="px-6 py-3 border border-white text-white hover:bg-white hover:text-amber-600 rounded-xl font-semibold transition-colors"
+              className="px-6 py-3 border border-white text-white hover:bg-white hover:text-[#6b4e3d] rounded-xl font-semibold transition-colors"
             >
               Написать нам
             </a>
