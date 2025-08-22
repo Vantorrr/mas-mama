@@ -7,13 +7,14 @@ import Image from 'next/image';
 
 export default function AdminHomepagePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<any>({
     heroImage: '/logo.jpg',
+    heroPos: { x: 50, y: 50 },
     blocks: {
-      novinkiFoto: '/logo.jpg',
-      kolyeFoto: '/logo.jpg',
-      brasletyFoto: '/logo.jpg',
-      medalonyFoto: '/logo.jpg'
+      novinki: { url: '/logo.jpg', x: 50, y: 50 },
+      kolye: { url: '/logo.jpg', x: 50, y: 50 },
+      braslety: { url: '/logo.jpg', x: 50, y: 50 },
+      medalony: { url: '/logo.jpg', x: 50, y: 50 },
     }
   });
 
@@ -33,16 +34,30 @@ export default function AdminHomepagePage() {
         if (e.target?.result) {
           const imageData = e.target.result as string;
           if (blockKey === 'hero') {
-            setConfig(prev => ({ ...prev, heroImage: imageData }));
+            setConfig((prev: any) => ({ ...prev, heroImage: imageData }));
           } else {
-            setConfig(prev => ({
+            setConfig((prev: any) => ({
               ...prev,
-              blocks: { ...prev.blocks, [blockKey]: imageData }
+              blocks: { ...prev.blocks, [blockKey]: { ...prev.blocks[blockKey], url: imageData } }
             }));
           }
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const onSetFocal = (blockKey: string, e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+    const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+    if (blockKey === 'hero') {
+      setConfig((prev: any) => ({ ...prev, heroPos: { x, y } }));
+    } else {
+      setConfig((prev: any) => ({
+        ...prev,
+        blocks: { ...prev.blocks, [blockKey]: { ...prev.blocks[blockKey], x, y } }
+      }));
     }
   };
 
@@ -69,18 +84,14 @@ export default function AdminHomepagePage() {
     }
   };
 
-  const ImageUploadBlock = ({ title, blockKey, currentImage }: { title: string, blockKey: string, currentImage: string }) => (
+  const ImageUploadBlock = ({ title, blockKey, current }: { title: string, blockKey: string, current: { url: string, x: number, y: number } }) => (
     <div className="bg-white rounded-2xl p-6 shadow-md">
       <h3 className="text-lg font-semibold text-[#6b4e3d] mb-4">{title}</h3>
       
       <div className="mb-4">
-        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2]">
-          <Image
-            src={currentImage}
-            alt={title}
-            fill
-            className="object-cover"
-          />
+        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] cursor-crosshair" onClick={(e) => onSetFocal(blockKey, e)}>
+          <Image src={current.url} alt={title} fill className="object-cover" style={{ objectPosition: `${current.x}% ${current.y}%` }} />
+          <div className="absolute w-3 h-3 -mt-1.5 -ml-1.5 rounded-full ring-2 ring-white bg-[#3c2415]" style={{ left: `${current.x}%`, top: `${current.y}%` }} />
         </div>
       </div>
 
@@ -121,34 +132,14 @@ export default function AdminHomepagePage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           
           {/* Hero изображение */}
-          <ImageUploadBlock 
-            title="Hero-изображение (главный логотип)" 
-            blockKey="hero" 
-            currentImage={config.heroImage} 
-          />
+          <ImageUploadBlock title="Hero-изображение (главный логотип)" blockKey="hero" current={{ url: config.heroImage, x: config.heroPos.x, y: config.heroPos.y }} />
 
           {/* Блоки категорий */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageUploadBlock 
-              title="Обложка блока 'Новинки'" 
-              blockKey="novinkiFoto" 
-              currentImage={config.blocks.novinkiFoto} 
-            />
-            <ImageUploadBlock 
-              title="Обложка блока 'Колье'" 
-              blockKey="kolyeFoto" 
-              currentImage={config.blocks.kolyeFoto} 
-            />
-            <ImageUploadBlock 
-              title="Обложка блока 'Браслеты'" 
-              blockKey="brasletyFoto" 
-              currentImage={config.blocks.brasletyFoto} 
-            />
-            <ImageUploadBlock 
-              title="Обложка блока 'Медальоны'" 
-              blockKey="medalonyFoto" 
-              currentImage={config.blocks.medalonyFoto} 
-            />
+            <ImageUploadBlock title="Обложка блока 'Новинки'" blockKey="novinki" current={config.blocks.novinki} />
+            <ImageUploadBlock title="Обложка блока 'Колье'" blockKey="kolye" current={config.blocks.kolye} />
+            <ImageUploadBlock title="Обложка блока 'Браслеты'" blockKey="braslety" current={config.blocks.braslety} />
+            <ImageUploadBlock title="Обложка блока 'Медальоны'" blockKey="medalony" current={config.blocks.medalony} />
           </div>
 
           {/* Кнопка сохранения */}

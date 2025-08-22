@@ -9,17 +9,39 @@ export async function GET() {
     
     try {
       const data = await fs.readFile(configPath, 'utf-8');
-      return NextResponse.json(JSON.parse(data));
+      const raw = JSON.parse(data);
+      // Нормализуем схему к новой структуре с фокусом (x/y) и обратной совместимостью
+      const normalizeBlock = (urlOrObj: any) => {
+        if (!urlOrObj) return { url: '/logo.jpg', x: 50, y: 50 };
+        if (typeof urlOrObj === 'string') return { url: urlOrObj, x: 50, y: 50 };
+        const { url, x, y } = urlOrObj;
+        return { url: url || '/logo.jpg', x: Number(x ?? 50), y: Number(y ?? 50) };
+      };
+
+      // Поддержка старых ключей novinkiFoto/kolyeFoto/... если они были строками
+      const blocks = raw.blocks || {};
+      const normalized = {
+        heroImage: raw.heroImage || '/logo.jpg',
+        heroPos: { x: Number(raw.heroPos?.x ?? 50), y: Number(raw.heroPos?.y ?? 50) },
+        blocks: {
+          novinki: normalizeBlock(blocks.novinki || blocks.novinkiFoto),
+          kolye: normalizeBlock(blocks.kolye || blocks.kolyeFoto),
+          braslety: normalizeBlock(blocks.braslety || blocks.brasletyFoto),
+          medalony: normalizeBlock(blocks.medalony || blocks.medalonyFoto),
+        },
+      };
+      return NextResponse.json(normalized);
     } catch (error) {
       // Если файла нет, возвращаем дефолтные настройки
       const defaultConfig = {
         heroImage: '/logo.jpg',
+        heroPos: { x: 50, y: 50 },
         blocks: {
-          novinkiFoto: '/logo.jpg',
-          kolyeFoto: '/logo.jpg',
-          brasletyFoto: '/logo.jpg',
-          medalonyFoto: '/logo.jpg'
-        }
+          novinki: { url: '/logo.jpg', x: 50, y: 50 },
+          kolye: { url: '/logo.jpg', x: 50, y: 50 },
+          braslety: { url: '/logo.jpg', x: 50, y: 50 },
+          medalony: { url: '/logo.jpg', x: 50, y: 50 },
+        },
       };
       return NextResponse.json(defaultConfig);
     }
