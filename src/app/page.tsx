@@ -5,8 +5,6 @@ import Header from "@/components/Header";
 import CategoryBlocks from "@/components/CategoryBlocks";
 import { prisma } from "@/lib/prisma";
 import HeroCarousel from "@/components/HeroCarousel";
-import fs from 'fs/promises';
-import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,11 +15,11 @@ export default async function Home() {
     take: 8,
   });
 
-  // Читаем конфиг для hero/обложек на сервере
+  // Читаем hero слайды из БД (HomepageConfig)
   let heroSlides: { url: string; x: number; y: number }[] = [{ url: '/logo.jpg', x: 50, y: 50 }];
   try {
-    const data = await fs.readFile(path.join(process.cwd(), 'src/data/homepage.json'), 'utf-8');
-    const cfg = JSON.parse(data);
+    const row: any = await prisma.homepageConfig.findUnique({ where: { id: 1 } });
+    const cfg = row?.data || {};
     heroSlides = cfg?.hero?.slides || heroSlides;
   } catch {}
 
