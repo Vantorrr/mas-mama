@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// Удаление товара
+// Удаление товара (метод override через POST)
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -12,20 +12,28 @@ export async function POST(
     const method = formData.get('_method');
 
     if (method === 'DELETE') {
-      // Сначала удаляем связанные изображения
-      await prisma.productImage.deleteMany({
-        where: { productId: parseInt(id) }
-      });
-
-      // Затем удаляем товар
-      await prisma.product.delete({
-        where: { id: parseInt(id) }
-      });
-
-      return NextResponse.redirect(new URL('/admin/products', request.url));
+      await prisma.productImage.deleteMany({ where: { productId: parseInt(id) } });
+      await prisma.product.delete({ where: { id: parseInt(id) } });
+      return NextResponse.json({ success: true });
     }
 
     return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
+  }
+}
+
+// Удаление товара (нативный HTTP DELETE)
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    await prisma.productImage.deleteMany({ where: { productId: parseInt(id) } });
+    await prisma.product.delete({ where: { id: parseInt(id) } });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting product:', error);
     return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });

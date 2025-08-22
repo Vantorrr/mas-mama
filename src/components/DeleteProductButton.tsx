@@ -17,13 +17,13 @@ export default function DeleteProductButton({ productId, productName }: DeletePr
     }
 
     try {
-      const formData = new FormData();
-      formData.append('_method', 'DELETE');
-
-      const response = await fetch(`/api/admin/products/${productId}`, {
-        method: 'POST',
-        body: formData,
-      });
+      // Пробуем нативный DELETE; если сервер не поддержит, fallback на метод override
+      let response = await fetch(`/api/admin/products/${productId}`, { method: 'DELETE' });
+      if (!response.ok) {
+        const formData = new FormData();
+        formData.append('_method', 'DELETE');
+        response = await fetch(`/api/admin/products/${productId}`, { method: 'POST', body: formData });
+      }
 
       if (response.ok) {
         router.refresh();
