@@ -6,10 +6,10 @@ import Image from 'next/image';
 export default function CategoryBlocks() {
   const [config, setConfig] = useState<any>({
     blocks: {
-      novinki: { url: '/logo.jpg', x: 50, y: 50 },
-      kolye: { url: '/logo.jpg', x: 50, y: 50 },
-      braslety: { url: '/logo.jpg', x: 50, y: 50 },
-      medalony: { url: '/logo.jpg', x: 50, y: 50 },
+      novinki: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      kolye: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      braslety: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      medalony: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
     }
   });
 
@@ -30,7 +30,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?new=true" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.novinki.url} alt="Новинки" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.novinki.x}% ${config.blocks.novinki.y}%` }} />
+                <Image src={config.blocks.novinki.slides[0].url} alt="Новинки" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.novinki.slides[0].x}% ${config.blocks.novinki.slides[0].y}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Новинки</h3>
@@ -42,7 +42,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=kolye" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.kolye.url} alt="Колье" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.kolye.x}% ${config.blocks.kolye.y}%` }} />
+                <Image src={config.blocks.kolye.slides[0].url} alt="Колье" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.kolye.slides[0].x}% ${config.blocks.kolye.slides[0].y}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Колье</h3>
@@ -54,7 +54,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=braslety" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.braslety.url} alt="Браслеты" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.braslety.x}% ${config.blocks.braslety.y}%` }} />
+                <Image src={config.blocks.braslety.slides[0].url} alt="Браслеты" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.braslety.slides[0].x}% ${config.blocks.braslety.slides[0].y}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Браслеты</h3>
@@ -66,7 +66,7 @@ export default function CategoryBlocks() {
           <a href="/catalog?category=medalony" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={config.blocks.medalony.url} alt="Медальоны" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.medalony.x}% ${config.blocks.medalony.y}%` }} />
+                <Image src={config.blocks.medalony.slides[0].url} alt="Медальоны" fill className="object-cover group-hover:scale-105 transition-transform duration-300" style={{ objectPosition: `${config.blocks.medalony.slides[0].x}% ${config.blocks.medalony.slides[0].y}%` }} />
               </div>
               <div className="p-3 text-center">
                 <h3 className="font-semibold text-[#6b4e3d] text-sm">Медальоны</h3>

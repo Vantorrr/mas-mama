@@ -11,18 +11,24 @@ export async function GET() {
       const data = await fs.readFile(configPath, 'utf-8');
       const raw = JSON.parse(data);
       // Нормализуем схему к новой структуре с фокусом (x/y) и обратной совместимостью
-      const normalizeBlock = (urlOrObj: any) => {
-        if (!urlOrObj) return { url: '/logo.jpg', x: 50, y: 50 };
-        if (typeof urlOrObj === 'string') return { url: urlOrObj, x: 50, y: 50 };
-        const { url, x, y } = urlOrObj;
-        return { url: url || '/logo.jpg', x: Number(x ?? 50), y: Number(y ?? 50) };
+      const normalizeSlide = (input: any) => {
+        if (!input) return { url: '/logo.jpg', x: 50, y: 50 };
+        if (typeof input === 'string') return { url: input, x: 50, y: 50 };
+        return { url: input.url || '/logo.jpg', x: Number(input.x ?? 50), y: Number(input.y ?? 50) };
+      };
+      const normalizeBlock = (val: any) => {
+        // Поддержка: строка → один слайд; объект → один слайд; массив → slides
+        if (Array.isArray(val)) return { slides: val.map(normalizeSlide) };
+        const slide = normalizeSlide(val);
+        return { slides: [slide] };
       };
 
       // Поддержка старых ключей novinkiFoto/kolyeFoto/... если они были строками
       const blocks = raw.blocks || {};
       const normalized = {
-        heroImage: raw.heroImage || '/logo.jpg',
-        heroPos: { x: Number(raw.heroPos?.x ?? 50), y: Number(raw.heroPos?.y ?? 50) },
+        hero: {
+          slides: (raw.hero?.slides ? raw.hero.slides : [raw.heroImage]).map(normalizeSlide),
+        },
         blocks: {
           novinki: normalizeBlock(blocks.novinki || blocks.novinkiFoto),
           kolye: normalizeBlock(blocks.kolye || blocks.kolyeFoto),
@@ -34,13 +40,12 @@ export async function GET() {
     } catch (error) {
       // Если файла нет, возвращаем дефолтные настройки
       const defaultConfig = {
-        heroImage: '/logo.jpg',
-        heroPos: { x: 50, y: 50 },
+        hero: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
         blocks: {
-          novinki: { url: '/logo.jpg', x: 50, y: 50 },
-          kolye: { url: '/logo.jpg', x: 50, y: 50 },
-          braslety: { url: '/logo.jpg', x: 50, y: 50 },
-          medalony: { url: '/logo.jpg', x: 50, y: 50 },
+          novinki: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+          kolye: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+          braslety: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+          medalony: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
         },
       };
       return NextResponse.json(defaultConfig);

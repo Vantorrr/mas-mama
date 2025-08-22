@@ -8,13 +8,12 @@ import Image from 'next/image';
 export default function AdminHomepagePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [config, setConfig] = useState<any>({
-    heroImage: '/logo.jpg',
-    heroPos: { x: 50, y: 50 },
+    hero: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
     blocks: {
-      novinki: { url: '/logo.jpg', x: 50, y: 50 },
-      kolye: { url: '/logo.jpg', x: 50, y: 50 },
-      braslety: { url: '/logo.jpg', x: 50, y: 50 },
-      medalony: { url: '/logo.jpg', x: 50, y: 50 },
+      novinki: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      kolye: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      braslety: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
+      medalony: { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] },
     }
   });
 
@@ -34,11 +33,14 @@ export default function AdminHomepagePage() {
         if (e.target?.result) {
           const imageData = e.target.result as string;
           if (blockKey === 'hero') {
-            setConfig((prev: any) => ({ ...prev, heroImage: imageData }));
+            setConfig((prev: any) => ({
+              ...prev,
+              hero: { slides: [{ url: imageData, x: 50, y: 50 }] },
+            }));
           } else {
             setConfig((prev: any) => ({
               ...prev,
-              blocks: { ...prev.blocks, [blockKey]: { ...prev.blocks[blockKey], url: imageData } }
+              blocks: { ...prev.blocks, [blockKey]: { slides: [{ url: imageData, x: 50, y: 50 }] } }
             }));
           }
         }
@@ -52,12 +54,17 @@ export default function AdminHomepagePage() {
     const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
     const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
     if (blockKey === 'hero') {
-      setConfig((prev: any) => ({ ...prev, heroPos: { x, y } }));
+      setConfig((prev: any) => {
+        const slides = prev.hero.slides ? [...prev.hero.slides] : [{ url: prev.heroImage, x: 50, y: 50 }];
+        slides[0] = { ...slides[0], x, y };
+        return { ...prev, hero: { slides } };
+      });
     } else {
-      setConfig((prev: any) => ({
-        ...prev,
-        blocks: { ...prev.blocks, [blockKey]: { ...prev.blocks[blockKey], x, y } }
-      }));
+      setConfig((prev: any) => {
+        const slides = prev.blocks[blockKey]?.slides ? [...prev.blocks[blockKey].slides] : [{ url: '/logo.jpg', x: 50, y: 50 }];
+        slides[0] = { ...slides[0], x, y };
+        return { ...prev, blocks: { ...prev.blocks, [blockKey]: { slides } } };
+      });
     }
   };
 
@@ -132,14 +139,14 @@ export default function AdminHomepagePage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           
           {/* Hero изображение */}
-          <ImageUploadBlock title="Hero-изображение (главный логотип)" blockKey="hero" current={{ url: config.heroImage, x: config.heroPos.x, y: config.heroPos.y }} />
+          <ImageUploadBlock title="Hero-изображение (главный логотип)" blockKey="hero" current={config.hero.slides[0]} />
 
           {/* Блоки категорий */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageUploadBlock title="Обложка блока 'Новинки'" blockKey="novinki" current={config.blocks.novinki} />
-            <ImageUploadBlock title="Обложка блока 'Колье'" blockKey="kolye" current={config.blocks.kolye} />
-            <ImageUploadBlock title="Обложка блока 'Браслеты'" blockKey="braslety" current={config.blocks.braslety} />
-            <ImageUploadBlock title="Обложка блока 'Медальоны'" blockKey="medalony" current={config.blocks.medalony} />
+            <ImageUploadBlock title="Обложка блока 'Новинки'" blockKey="novinki" current={config.blocks.novinki.slides[0]} />
+            <ImageUploadBlock title="Обложка блока 'Колье'" blockKey="kolye" current={config.blocks.kolye.slides[0]} />
+            <ImageUploadBlock title="Обложка блока 'Браслеты'" blockKey="braslety" current={config.blocks.braslety.slides[0]} />
+            <ImageUploadBlock title="Обложка блока 'Медальоны'" blockKey="medalony" current={config.blocks.medalony.slides[0]} />
           </div>
 
           {/* Кнопка сохранения */}

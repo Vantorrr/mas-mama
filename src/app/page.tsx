@@ -4,6 +4,9 @@ import { Heart, Star, ShoppingBag } from "lucide-react";
 import Header from "@/components/Header";
 import CategoryBlocks from "@/components/CategoryBlocks";
 import { prisma } from "@/lib/prisma";
+import HeroCarousel from "@/components/HeroCarousel";
+import fs from 'fs/promises';
+import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,20 +17,22 @@ export default async function Home() {
     take: 8,
   });
 
+  // Читаем конфиг для hero/обложек на сервере
+  let heroSlides: { url: string; x: number; y: number }[] = [{ url: '/logo.jpg', x: 50, y: 50 }];
+  try {
+    const data = await fs.readFile(path.join(process.cwd(), 'src/data/homepage.json'), 'utf-8');
+    const cfg = JSON.parse(data);
+    heroSlides = cfg?.hero?.slides || heroSlides;
+  } catch {}
+
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
       <Header />
 
-      {/* Большой логотип по центру */}
+      {/* Hero */}
       <section className="py-20 px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <Image 
-            src="/logo.jpg" 
-            width={200} 
-            height={200} 
-            alt="masterskaya_mama" 
-            className="mx-auto rounded-full shadow-xl mb-6" 
-          />
+          <HeroCarousel slides={heroSlides} />
           <h1 className="text-4xl font-bold text-[#6b4e3d] mb-4">masterskaya_mama</h1>
           <p className="text-[#8b7355] text-lg">Авторские украшения ручной работы</p>
         </div>
