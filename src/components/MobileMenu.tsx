@@ -52,22 +52,21 @@ export default function MobileMenu() {
       {/* Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-60 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50 z-[9998]"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Боковое меню */}
       <div 
-        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-2xl border-r border-[#e8dcc6] z-[9999] transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-72 bg-[#fdfcfb] shadow-xl z-[9999] transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ backgroundColor: 'white', opacity: 1 }}
       >
-        <div className="p-6" style={{ backgroundColor: 'white' }}>
-          {/* Заголовок */}
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-semibold text-[#6b4e3d]">Каталог</h2>
+        <div className="h-full bg-[#fdfcfb]">
+          {/* Header с логотипом */}
+          <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
             <button 
               onClick={() => setIsOpen(false)}
               className="p-2 rounded-full hover:bg-[#f8f3ed] transition-colors"
@@ -75,6 +74,8 @@ export default function MobileMenu() {
               <X size={20} className="text-[#8b7355]" />
             </button>
           </div>
+          
+          <div className="p-6">
 
           {/* Пункты меню */}
           <nav className="space-y-2">
@@ -84,14 +85,14 @@ export default function MobileMenu() {
                   <Link 
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="flex-1 py-3 px-4 text-[#6b4e3d] hover:bg-[#f8f3ed] rounded-lg transition-colors font-medium"
+                    className="flex-1 py-3 px-4 text-[#6b4e3d] hover:bg-white rounded-lg transition-all hover:shadow-sm font-medium"
                   >
                     {item.name}
                   </Link>
                   {item.subcategories && (
                     <button
                       onClick={() => setOpenCategory(openCategory === item.name ? null : item.name)}
-                      className="p-2 hover:bg-[#f8f3ed] rounded-lg transition-colors"
+                      className="p-2 hover:bg-white rounded-lg transition-all hover:shadow-sm"
                     >
                       <ChevronRight 
                         size={16} 
