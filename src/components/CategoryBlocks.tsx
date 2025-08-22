@@ -14,11 +14,14 @@ export default function CategoryBlocks() {
   });
 
   useEffect(() => {
-    // Загружаем настройки обложек без кэша
-    fetch('/api/admin/homepage', { cache: 'no-store' })
+    // Загружаем настройки обложек без кэша и обновляем при фокусе вкладки
+    const load = () => fetch('/api/admin/homepage', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => setConfig(data))
       .catch(console.error);
+    load();
+    window.addEventListener('focus', load);
+    return () => window.removeEventListener('focus', load);
   }, []);
 
   return (

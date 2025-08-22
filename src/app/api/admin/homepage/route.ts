@@ -15,10 +15,15 @@ export async function GET() {
         return { url: input.url || '/logo.jpg', x: Number(input.x ?? 50), y: Number(input.y ?? 50) };
       };
       const normalizeBlock = (val: any) => {
-        // Поддержка: строка → один слайд; объект → один слайд; массив → slides
+        // Поддержка форматов:
+        // - массив слайдов
+        // - объект { slides: [...] }
+        // - строка URL
+        // - объект слайд { url, x, y }
+        if (!val) return { slides: [{ url: '/logo.jpg', x: 50, y: 50 }] };
         if (Array.isArray(val)) return { slides: val.map(normalizeSlide) };
-        const slide = normalizeSlide(val);
-        return { slides: [slide] };
+        if (Array.isArray(val.slides)) return { slides: val.slides.map(normalizeSlide) };
+        return { slides: [normalizeSlide(val)] };
       };
 
       // Поддержка старых ключей novinkiFoto/kolyeFoto/... если они были строками
