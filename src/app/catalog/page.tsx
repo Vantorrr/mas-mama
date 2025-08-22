@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import AddToCartButton from '@/components/AddToCartButton';
 import { Search } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,41 +65,43 @@ export default async function CatalogPage({ searchParams }: { searchParams: Sear
           </div>
         ) : (
           <div className="grid grid-cols-1 см:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((p) => {
+            {products.map((p, idx) => {
               const cover = p.images.find(i => i.isCover) ?? p.images[0];
               return (
-                <div key={p.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                  <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2]">
-                    {cover && (
-                      <Image src={cover.url} alt={p.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                    )}
-                    {!p.inStock && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <span className="text-white font-semibold">Нет в наличии</span>
-                      </div>
-                    )}
-                  </div>
+                <ScrollReveal key={p.id} delay={idx * 60}>
+                  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2]">
+                      {cover && (
+                        <Image src={cover.url} alt={p.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                      )}
+                      {!p.inStock && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                          <span className="text-white font-semibold">Нет в наличии</span>
+                        </div>
+                      )}
+                    </div>
 
-                  <div className="p-4 flex-1">
-                    <Link href={`/product/${encodeURIComponent(p.slug || p.sku)}`}>
-                      <h3 className="font-semibold text-[#6b4e3d] mb-2 hover:text-[#3c2415] transition-colors line-clamp-2">{p.name}</h3>
-                    </Link>
-                    <p className="text-sm text-[#8b7355] mb-2">Артикул: {p.sku}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold text-[#6б4e3d]">{(p.priceCents / 100).toLocaleString('ru-RU')} ₽</span>
-                      <div className="flex gap-2">
-                        <Link href={`/product/${encodeURIComponent(p.slug || p.sku)}`} className="px-3 py-2 text-sm border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-lg transition-colors">Подробнее</Link>
-                        <AddToCartButton
-                          productId={p.id}
-                          productName={p.name}
-                          productPrice={p.priceCents / 100}
-                          productImage={cover?.url || '/logo.jpg'}
-                          className="px-3 py-2 text-sm bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-lg transition-colors flex items-center gap-2"
-                        />
+                    <div className="p-4 flex-1">
+                      <Link href={`/product/${encodeURIComponent(p.slug || p.sku)}`}>
+                        <h3 className="font-semibold text-[#6b4e3d] mb-2 hover:text-[#3c2415] transition-colors line-clamp-2">{p.name}</h3>
+                      </Link>
+                      <p className="text-sm text-[#8b7355] mb-2">Артикул: {p.sku}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold text-[#6б4e3d]">{(p.priceCents / 100).toLocaleString('ru-RU')} ₽</span>
+                        <div className="flex gap-2">
+                          <Link href={`/product/${encodeURIComponent(p.slug || p.sku)}`} className="px-3 py-2 text-sm border border-[#6b4e3d] text-[#6b4e3d] hover:bg-[#6b4e3d] hover:text-white rounded-lg transition-colors">Подробнее</Link>
+                          <AddToCartButton
+                            productId={p.id}
+                            productName={p.name}
+                            productPrice={p.priceCents / 100}
+                            productImage={cover?.url || '/logo.jpg'}
+                            className="px-3 py-2 text-sm bg-[#6b4e3d] hover:bg-[#3c2415] text-white rounded-lg transition-colors flex items-center gap-2"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>

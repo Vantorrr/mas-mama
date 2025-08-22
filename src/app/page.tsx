@@ -5,6 +5,7 @@ import { Heart, Star, ShoppingBag } from "lucide-react";
 import CategoryBlocks from "@/components/CategoryBlocks";
 import { prisma } from "@/lib/prisma";
 import HeroCarousel from "@/components/HeroCarousel";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const revalidate = 60;
 
@@ -36,37 +37,38 @@ export default async function Home() {
       {/* НОВИНКИ - горизонтальная прокрутка */}
       <section className="py-16 px-6">
         <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-8">
+          <ScrollReveal className="text-center mb-8">
             <h2 className="text-3xl font-bold text-[#6b4e3d] mb-4">Новинки</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-[#3c2415] to-[#2d2d2d] rounded-full mx-auto"></div>
-          </div>
+          </ScrollReveal>
 
           <div className="overflow-x-auto">
             <div className="flex gap-6 min-w-max">
-              {products.map((p) => {
+              {products.map((p, idx) => {
                 const cover = p.images.find((i) => i.isCover) ?? p.images[0];
                 return (
-                  <Link
-                    key={p.id}
-                    href={`/product/${p.slug}`}
-                    className="w-64 bg-white rounded-2xl shadow-md hover:shadow-2xl card-hover overflow-hidden flex-shrink-0"
-                  >
-                    <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] overflow-hidden">
-                      {cover && (
-                        <Image 
-                          src={cover.url} 
-                          alt={p.name} 
-                          fill 
-                          className="object-cover group-hover:scale-110 transition-transform duration-500" 
-                        />
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-[#6b4e3d] mb-1 line-clamp-1">{p.name}</h3>
-                      <p className="text-sm text-[#8b7355] mb-2">Артикул: {p.sku}</p>
-                      <span className="text-lg font-bold text-[#6b4e3d]">{(p.priceCents / 100).toLocaleString("ru-RU")} ₽</span>
-                    </div>
-                  </Link>
+                  <ScrollReveal key={p.id} delay={idx * 80}>
+                    <Link
+                      href={`/product/${p.slug}`}
+                      className="w-64 bg-white rounded-2xl shadow-md hover:shadow-2xl card-hover overflow-hidden flex-shrink-0"
+                    >
+                      <div className="relative aspect-square bg-gradient-to-br from-[#f8f3ed] to-[#f0e6d2] overflow-hidden">
+                        {cover && (
+                          <Image 
+                            src={cover.url} 
+                            alt={p.name} 
+                            fill 
+                            className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                          />
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-[#6b4e3d] mb-1 line-clamp-1">{p.name}</h3>
+                        <p className="text-sm text-[#8b7355] mb-2">Артикул: {p.sku}</p>
+                        <span className="text-lg font-bold text-[#6b4e3d]">{(p.priceCents / 100).toLocaleString("ru-RU")} ₽</span>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
                 );
               })}
               {products.length === 0 && (
