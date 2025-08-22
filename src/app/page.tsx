@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrollReveal from "@/components/ScrollReveal";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const products = await prisma.product.findMany({
