@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { toWebp } from "@/lib/image";
 
 // Получить настройки главной страницы
 export async function GET() {
@@ -62,11 +63,33 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    // Если пришли base64-картинки — конвертируем в WebP и ограничим размер
+    const optimizeSlides = async (slides: any[] = []) => {
+      const out: any[] = [];
+      for (const s of slides) {
+        const isBase64 = typeof s?.url === 'string' && s.url.startsWith('data:image');
+        out.push({
+          url: isBase64 ? await toWebp(s.url, { width: 2560, height: 1440, quality: 82 }) : s.url,
+          x: Number(s?.x ?? 50),
+          y: Number(s?.y ?? 50),
+        });
+      }
+      return out;
+    };
+
+    const normalized = { ...body };
+    if (normalized.hero?.slides) normalized.hero.slides = await optimizeSlides(normalized.hero.slides);
+    if (normalized.blocks) {
+      for (const key of Object.keys(normalized.blocks)) {
+        const block = normalized.blocks[key];
+        if (block?.slides) normalized.blocks[key].slides = await optimizeSlides(block.slides);
+      }
+    }
     // upsert в БД
     await prisma.homepageConfig.upsert({
       where: { id: 1 },
-      update: { data: body },
-      create: { id: 1, data: body },
+      update: { data: normalized },
+      create: { id: 1, data: normalized },
     });
     return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {

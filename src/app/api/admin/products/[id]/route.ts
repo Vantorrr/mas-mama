@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { toWebp } from "@/lib/image";
 import { slugify } from "@/lib/slugify";
 
 // Удаление товара (метод override через POST)
@@ -77,18 +78,20 @@ export async function PUT(
       });
 
       // Добавляем новые
-      await Promise.all(
-        images.map((imageUrl: string, index: number) =>
-          prisma.productImage.create({
-            data: {
-              productId: product.id,
-              url: imageUrl,
-              isCover: index === 0,
-              sortOrder: index,
-            },
-          })
-        )
-      );
+      for (let index = 0; index < images.length; index++) {
+        const imageUrl: string = images[index];
+        const optimized = imageUrl.startsWith('data:image')
+          ? await toWebp(imageUrl, { width: 1600, height: 1600, quality: 85 })
+          : imageUrl;
+        await prisma.productImage.create({
+          data: {
+            productId: product.id,
+            url: optimized,
+            isCover: index === 0,
+            sortOrder: index,
+          },
+        });
+      }
     }
 
     return NextResponse.json({ success: true, product });
