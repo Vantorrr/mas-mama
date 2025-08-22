@@ -16,7 +16,21 @@ export default function Header() {
 
           {/* Центр - логотип и название (строго по центру) */}
           <div className="justify-self-center">
-            <Link href="/" className="flex items-center gap-4 group">
+            <Link
+              href="/"
+              prefetch={false}
+              className="flex items-center gap-4 group cursor-pointer"
+              onClick={(e) => {
+                // fallback на случай, если клиентский роутер тормозит/заблокирован
+                const timer = setTimeout(() => {
+                  if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+                    window.location.assign('/');
+                  }
+                }, 800);
+                // очистка, если переход сработал быстро
+                window.addEventListener('popstate', () => clearTimeout(timer), { once: true });
+              }}
+            >
               <div className="relative">
                 <Image 
                   src="/logo.jpg" 
