@@ -59,11 +59,12 @@ export default function MobileMenu() {
 
       {/* Боковое меню */}
       <div 
-        className={`fixed top-0 left-0 h-full w-72 bg-[#fdfcfb] shadow-xl z-[9999] transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-72 shadow-xl z-[9999] transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
+        style={{ backgroundColor: '#ffffff', opacity: '1' }}
       >
-        <div className="h-full bg-[#fdfcfb]">
+        <div className="h-full" style={{ backgroundColor: '#fdfcfb' }}>
           {/* Header с логотипом */}
           <div className="bg-white border-b border-[#e8dcc6] px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-[#6b4e3d]">Меню</h2>
