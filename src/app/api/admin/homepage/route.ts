@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from 'fs/promises';
-import path from 'path';
+import { prisma } from "@/lib/prisma";
 
 // Получить настройки главной страницы
 export async function GET() {
   try {
-    const configPath = path.join(process.cwd(), 'src/data/homepage.json');
-    
     try {
-      const data = await fs.readFile(configPath, 'utf-8');
-      const raw = JSON.parse(data);
+      // Читаем из БД
+      const row = await prisma.homepageConfig.findUnique({ where: { id: 1 } });
+      const raw = (row?.data as any) || {};
       // Нормализуем схему к новой структуре с фокусом (x/y) и обратной совместимостью
       const normalizeSlide = (input: any) => {
         if (!input) return { url: '/logo.jpg', x: 50, y: 50 };
@@ -59,18 +57,13 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const configPath = path.join(process.cwd(), 'src/data/homepage.json');
-    
-    // Создаем папку если не существует
-    const dataDir = path.join(process.cwd(), 'src/data');
-    try {
-      await fs.mkdir(dataDir, { recursive: true });
-    } catch (error) {
-      // Папка уже существует
-    }
-    
-    await fs.writeFile(configPath, JSON.stringify(body, null, 2));
-    return NextResponse.json({ success: true });
+    // upsert в БД
+    await prisma.homepageConfig.upsert({
+      where: { id: 1 },
+      update: { data: body },
+      create: { id: 1, data: body },
+    });
+    return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Error saving homepage config:', error);
     return NextResponse.json({ error: 'Failed to save homepage config' }, { status: 500 });
