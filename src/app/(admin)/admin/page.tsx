@@ -4,6 +4,7 @@ import Image from "next/image";
 import DeleteProductButton from "@/components/DeleteProductButton";
 import SeedDataButton from "@/components/SeedDataButton";
 import AdminLogout from "@/components/AdminLogout";
+import { prisma } from "@/lib/prisma";
 
 export const revalidate = 0;
 
@@ -19,11 +20,16 @@ interface Product {
   slug: string;
 }
 
-export default function AdminHome() {
-  // Заглушки для сборки
-  const products: Product[] = [];
-  const categories: any[] = [];
-  const totalProducts = 0;
+export default async function AdminHome() {
+  const [totalProducts, categoriesCount, products] = await Promise.all([
+    prisma.product.count(),
+    prisma.category.count(),
+    prisma.product.findMany({
+      include: { images: true, category: true, subcategory: true },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+    }),
+  ]);
 
   return (
     <main className="min-h-dvh bg-gradient-to-b from-[#fffbf7] to-[#f8f3ed]">
@@ -61,7 +67,7 @@ export default function AdminHome() {
             <div className="flex items-center gap-3">
               <BarChart3 className="text-amber-500" size={24} />
               <div>
-                <p className="text-2xl font-bold text-[#6b4e3d]">{categories.length}</p>
+                <p className="text-2xl font-bold text-[#6b4e3d]">{categoriesCount}</p>
                 <p className="text-sm text-[#8b7355]">Категорий</p>
               </div>
             </div>
