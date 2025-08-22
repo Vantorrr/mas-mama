@@ -37,12 +37,17 @@ const menuItems = [
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  
+  console.log('MobileMenu render, isOpen:', isOpen);
 
   return (
     <>
       {/* Кнопка меню */}
       <button 
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          console.log('Menu button clicked');
+          setIsOpen(true);
+        }}
         className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#f8f3ed] hover:bg-[#f0e6d2] transition-colors group"
       >
         <Menu size={18} className="text-[#6b4e3d] group-hover:text-[#8b7355]" />
