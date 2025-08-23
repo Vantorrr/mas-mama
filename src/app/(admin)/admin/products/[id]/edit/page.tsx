@@ -25,3 +25,4 @@ export default async function EditProductPage({ params }: Props) {
     </main>
   );
 }
+

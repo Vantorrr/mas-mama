@@ -25,3 +25,4 @@ export async function isAuthenticated() {
   const session = await getSession();
   return session.isAdmin === true;
 }
+

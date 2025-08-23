@@ -81,3 +81,4 @@ INSERT INTO "Category" ("name", "slug", "order") VALUES
 ('Браслеты', 'braslety', 1),
 ('Колье', 'kolye', 2), 
 ('Медальоны', 'medalony', 3);
+

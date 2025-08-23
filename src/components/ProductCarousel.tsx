@@ -196,3 +196,4 @@ export default function ProductCarousel({ products, title, autoPlay = true }: Pr
     </section>
   );
 }
+
