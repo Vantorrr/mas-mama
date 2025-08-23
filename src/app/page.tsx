@@ -28,7 +28,14 @@ export default async function Home() {
     ["home-latest"],
     { revalidate: 60 }
   );
-  const products = await getLatest();
+  const products = await getLatest() as Array<{
+    id: string;
+    name: string;
+    slug: string | null;
+    sku: string;
+    priceCents: number;
+    images: Array<{ url: string; isCover: boolean | null }>;
+  }>;
 
   // Читаем hero слайды из БД (HomepageConfig)
   let heroSlides: { url: string; x: number; y: number }[] = [{ url: '/logo.jpg', x: 50, y: 50 }];
