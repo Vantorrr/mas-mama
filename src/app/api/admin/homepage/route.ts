@@ -68,8 +68,17 @@ export async function POST(request: NextRequest) {
       const out: any[] = [];
       for (const s of slides) {
         const isBase64 = typeof s?.url === 'string' && s.url.startsWith('data:image');
+        let finalUrl = s?.url || '/logo.jpg';
+        if (isBase64) {
+          try {
+            // Пытаемся оптимизировать, но если среда/библиотека не позволяет — не падаем
+            finalUrl = await toWebp(s.url, { width: 1920, height: 1080, quality: 80 });
+          } catch {
+            finalUrl = s.url; // fallback без конвертации
+          }
+        }
         out.push({
-          url: isBase64 ? await toWebp(s.url, { width: 2560, height: 1440, quality: 82 }) : s.url,
+          url: finalUrl,
           x: Number(s?.x ?? 50),
           y: Number(s?.y ?? 50),
         });
