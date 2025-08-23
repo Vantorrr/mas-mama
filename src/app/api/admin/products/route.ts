@@ -6,10 +6,35 @@ import { slugify } from "@/lib/slugify";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, sku, priceCents, shortDescription, categoryId, subcategoryId, inStock, images } = body;
+    const {
+      name,
+      sku,
+      priceCents,
+      price, // можно прислать price в рублях
+      shortDescription,
+      categoryId,
+      subcategoryId,
+      inStock,
+      images,
+    } = body;
 
     // Создаем slug надёжно (транслитерация + очистка)
     const slug = slugify(name, Date.now().toString());
+
+    // Нормализуем и валидируем поля
+    const finalPriceCents: number = Number.isFinite(Number(priceCents))
+      ? Math.round(Number(priceCents))
+      : Math.round(Number(String(price || 0).replace(/,/, '.')) * 100);
+
+    const categoryIdInt = categoryId ? parseInt(categoryId) : null;
+    const subcategoryIdInt = subcategoryId ? parseInt(subcategoryId) : null;
+
+    if (!name || !sku || !Number.isFinite(finalPriceCents)) {
+      return NextResponse.json(
+        { error: 'Некорректные данные товара' },
+        { status: 400 }
+      );
+    }
 
     // Создаем товар
     const product = await prisma.product.create({
@@ -17,11 +42,11 @@ export async function POST(request: NextRequest) {
         name,
         slug: `${slug}-${Date.now()}`, // Добавляем timestamp для уникальности
         sku,
-        priceCents,
+        priceCents: finalPriceCents,
         shortDescription: shortDescription || null,
-        categoryId: parseInt(categoryId),
-        subcategoryId: subcategoryId ? parseInt(subcategoryId) : null,
-        inStock,
+        categoryId: categoryIdInt,
+        subcategoryId: subcategoryIdInt,
+        inStock: Boolean(inStock),
       },
     });
 
@@ -29,9 +54,14 @@ export async function POST(request: NextRequest) {
     if (images && images.length > 0) {
       for (let index = 0; index < images.length; index++) {
         const imageUrl: string = images[index];
-        const optimized = imageUrl.startsWith('data:image')
-          ? await toWebp(imageUrl, { width: 1600, height: 1600, quality: 85 })
-          : imageUrl;
+        let optimized = imageUrl;
+        if (imageUrl && imageUrl.startsWith('data:image')) {
+          try {
+            optimized = await toWebp(imageUrl, { width: 1600, height: 1600, quality: 85 });
+          } catch {
+            optimized = imageUrl; // fallback без оптимизации
+          }
+        }
         await prisma.productImage.create({
           data: {
             productId: product.id,
