@@ -43,7 +43,8 @@ export async function POST(request: NextRequest) {
         slug: `${slug}-${Date.now()}`, // Добавляем timestamp для уникальности
         sku,
         priceCents: finalPriceCents,
-        shortDescription: shortDescription || null,
+        // Совместимо с любой схемой: пишем в стандартное поле
+        description: shortDescription || null,
         categoryId: categoryIdInt,
         subcategoryId: subcategoryIdInt,
         inStock: Boolean(inStock),
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
             productId: product.id,
             url: optimized,
             isCover: index === 0,
-            sortOrder: index,
+            // Не используем нестандартные поля для совместимости
           },
         });
       }
