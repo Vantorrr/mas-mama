@@ -12,24 +12,30 @@ export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const getLatest = unstable_cache(
-    async () =>
-      prisma.product.findMany({
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          sku: true,
-          priceCents: true,
-          images: { select: { url: true, isCover: true } },
-        },
-        orderBy: { createdAt: "desc" },
-        take: 8,
-      }),
+    async () => {
+      try {
+        if (!prisma || !(prisma as any).product) return [] as any[];
+        return await prisma.product.findMany({
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            sku: true,
+            priceCents: true,
+            images: { select: { url: true, isCover: true } },
+          },
+          orderBy: { createdAt: "desc" },
+          take: 8,
+        });
+      } catch {
+        return [] as any[];
+      }
+    },
     ["home-latest"],
     { revalidate: 60 }
   );
-  const products = await getLatest() as Array<{
-    id: string;
+  const products = (await getLatest()) as Array<{
+    id: any;
     name: string;
     slug: string | null;
     sku: string;
@@ -40,9 +46,11 @@ export default async function Home() {
   // Читаем hero слайды из БД (HomepageConfig)
   let heroSlides: { url: string; x: number; y: number }[] = [{ url: '/logo.jpg', x: 50, y: 50 }];
   try {
-    const row: any = await prisma.homepageConfig.findUnique({ where: { id: 1 } });
-    const cfg = row?.data || {};
-    heroSlides = cfg?.hero?.slides || heroSlides;
+    if (prisma && (prisma as any).homepageConfig) {
+      const row: any = await prisma.homepageConfig.findUnique({ where: { id: 1 } });
+      const cfg = row?.data || {};
+      heroSlides = cfg?.hero?.slides || heroSlides;
+    }
   } catch {}
 
   return (

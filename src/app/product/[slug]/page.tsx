@@ -13,15 +13,17 @@ type Props = { params: Promise<{ slug: string }> };
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = await prisma.product.findFirst({
-    where: {
-      OR: [
-        { slug: slug },
-        { sku: slug },
-      ],
-    },
-    include: { images: { orderBy: { sortOrder: "asc" } }, category: true, subcategory: true },
-  });
+  const product = await (async () => {
+    try {
+      if (!prisma || !(prisma as any).product) return null as any;
+      return await prisma.product.findFirst({
+        where: { OR: [{ slug }, { sku: slug }] },
+        include: { images: { orderBy: { sortOrder: "asc" } }, category: true, subcategory: true },
+      });
+    } catch {
+      return null as any;
+    }
+  })();
   if (!product) return notFound();
 
   return (

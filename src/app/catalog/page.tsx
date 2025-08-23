@@ -18,39 +18,44 @@ export default async function CatalogPage({ searchParams }: { searchParams: Sear
 
   const getProducts = unstable_cache(
     async (category?: string, sub?: string, q?: string) => {
-      return prisma.product.findMany({
-        where: {
-          AND: [
-            category ? { category: { slug: category } } : {},
-            sub ? { subcategory: { slug: sub } } : {},
-            q ? {
-              OR: [
-                { name: { contains: q, mode: 'insensitive' } },
-                { sku: { contains: q, mode: 'insensitive' } },
-              ],
-            } : {},
-          ],
-        },
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          sku: true,
-          priceCents: true,
-          inStock: true,
-          images: { select: { url: true, isCover: true } },
-          category: { select: { name: true } },
-          subcategory: { select: { name: true } },
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 48,
-      });
+      try {
+        if (!prisma || !(prisma as any).product) return [] as any[];
+        return await prisma.product.findMany({
+          where: {
+            AND: [
+              category ? { category: { slug: category } } : {},
+              sub ? { subcategory: { slug: sub } } : {},
+              q ? {
+                OR: [
+                  { name: { contains: q, mode: 'insensitive' } },
+                  { sku: { contains: q, mode: 'insensitive' } },
+                ],
+              } : {},
+            ],
+          },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            sku: true,
+            priceCents: true,
+            inStock: true,
+            images: { select: { url: true, isCover: true } },
+            category: { select: { name: true } },
+            subcategory: { select: { name: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 48,
+        });
+      } catch {
+        return [] as any[];
+      }
     },
     ['catalog-products'],
     { revalidate: 60 }
   );
 
-  const products = await getProducts(category, sub, q);
+  const products = (await getProducts(category, sub, q)) as any[];
 
   const heading = category ? (products[0]?.category?.name || 'Каталог украшений') : 'Каталог украшений';
 
