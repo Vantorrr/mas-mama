@@ -76,3 +76,8 @@ export async function POST() {
     }, { status: 500 });
   }
 }
+
+// Удобный запуск из браузера
+export async function GET() {
+  return POST();
+}
