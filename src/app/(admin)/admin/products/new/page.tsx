@@ -48,6 +48,7 @@ export default function NewProductPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          description: formData.shortDescription || '',
           priceCents: Math.round(parseFloat(formData.price) * 100),
           images: images,
         }),
