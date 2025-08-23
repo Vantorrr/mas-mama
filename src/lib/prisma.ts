@@ -1,18 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { withAccelerate } from "@prisma/extension-accelerate";
 
 declare global {
-  var prismaGlobal: any | undefined;
+  // eslint-disable-next-line no-var
+  var prismaGlobal: PrismaClient | undefined;
 }
 
-const prismaClientSingleton = () => {
-  return new PrismaClient({
-    // Важно: для Prisma Accelerate используем prisma:// URL из ENV
-    datasourceUrl: process.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-};
+const prismaClientSingleton = (): PrismaClient => new PrismaClient();
 
-export const prisma = global.prismaGlobal ?? prismaClientSingleton();
+export const prisma: PrismaClient = global.prismaGlobal ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== "production") {
   global.prismaGlobal = prisma;
