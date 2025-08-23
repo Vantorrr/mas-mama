@@ -123,6 +123,13 @@ export default async function AdminHome() {
                 <Settings size={18} />
                 Настройки главной страницы
               </Link>
+              <Link 
+                href="/admin/afisha" 
+                className="flex items-center gap-3 p-3 border-2 border-[#6b4e3d] text-[#6b4e3d] rounded-lg hover:bg-[#6b4e3d] hover:text-white transition-all"
+              >
+                <Edit size={18} />
+                Редактировать афишу
+              </Link>
             </div>
           </div>
         </div>
