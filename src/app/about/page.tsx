@@ -75,7 +75,7 @@ export default function AboutPage() {
             ].map((feature, index) => (
               <ScrollReveal key={feature.title}>
                 <div
-                  className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-500 border border-[#e8dcc6] hover:-translate-y-1"
+                  className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-500 border border-[#e8dcc6] hover:-translate-y-1 h-full"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-[#f8f3ed] group-hover:bg-[#6b4e3d]/10 transition-colors">
@@ -119,7 +119,7 @@ export default function AboutPage() {
               }
             ].map((value, index) => (
               <ScrollReveal key={index}>
-                <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow">
+                <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow h-full">
                   <div className="w-12 h-12 bg-[#f8f3ed] rounded-xl flex items-center justify-center mb-4">
                     <value.icon className="text-[#6b4e3d]" size={24} />
                   </div>

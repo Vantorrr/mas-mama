@@ -35,7 +35,7 @@ export default function ScrollReveal({ children, className = '', delay = 0, as =
 
   const Comp: any = as;
   return (
-    <Comp ref={ref} className={`sr-hidden ${className}`}>
+    <Comp ref={ref} className={className}>
       {children}
     </Comp>
   );
