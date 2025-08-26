@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Heart, Award, Gem, Users, Mail, Phone, MapPin } from 'lucide-react';
+import { Heart, Award, Gem, Users, Mail, Phone, MapPin, Sparkles, Leaf, Palette, Hand } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 
 export default function AboutPage() {
@@ -32,13 +32,6 @@ export default function AboutPage() {
                 <p>Сегодня мы создаем авторские украшения из натуральных камней и керамики, каждое изделие проходит через наши руки с особой заботой и вниманием.</p>
                 <p>Украшения мастерской — это больше чем украшения. Это частичка вашей истории.</p>
                 <p>Мы верим, что украшение — это не просто аксессуар, а личный талисман, хранящий эмоции и воспоминания.</p>
-                <h3 className="font-semibold text-[#6b4e3d] mt-6">Почему наши изделия особенные?</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li><strong>Эксклюзивность и душа:</strong> Каждое колье и браслет создается вручную и существует в ограниченном количестве. Вы становитесь обладателем по-настоящему уникальной вещи.</li>
-                  <li><strong>Сила природы:</strong> Мы используем только натуральные камни, каждый из которых обладает своей собственной энергетикой и неповторимой красотой.</li>
-                  <li><strong>Авторский почерк:</strong> Изюминка наших работ — фигурки из керамики ручной лепки. Эти миниатюрные скульптуры делают каждое изделие произведением искусства.</li>
-                  <li><strong>Тактильное удовольствие:</strong> Наши украшения хочется рассматривать, трогать и держать в руках. В их деталях вы каждый раз будете находить что-то своё, близкое и родное.</li>
-                </ul>
                 <p className="pt-2">Masterskaya_mama создает украшения, которые будут согревать вас и дополнять ваш образ особой теплотой и историей.</p>
               </div>
             </ScrollReveal>
@@ -50,6 +43,49 @@ export default function AboutPage() {
                 </div>
               </div>
             </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Особенности изделий */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold text-[#6b4e3d] text-center mb-12">Почему наши изделия особенные?</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: Sparkles,
+                title: 'Эксклюзивность и душа',
+                description: 'Каждое украшение создаётся вручную и выпускается ограниченными тиражами — по-настоящему уникальная вещь.'
+              },
+              {
+                icon: Leaf,
+                title: 'Сила природы',
+                description: 'Используем только натуральные камни с характером и энергетикой. Выбираем лучшее по цвету и фактуре.'
+              },
+              {
+                icon: Palette,
+                title: 'Авторский почерк',
+                description: 'Фигурки из керамики ручной лепки — наша изюминка. Каждая миниатюра превращает изделие в арт-объект.'
+              },
+              {
+                icon: Hand,
+                title: 'Тактильное удовольствие',
+                description: 'Украшения хочется рассматривать и держать в руках. В деталях каждый находит что-то своё, близкое и родное.'
+              }
+            ].map((feature, index) => (
+              <ScrollReveal key={feature.title}>
+                <div
+                  className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-500 border border-[#e8dcc6] hover:-translate-y-1"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-[#f8f3ed] group-hover:bg-[#6b4e3d]/10 transition-colors">
+                    <feature.icon className="text-[#6b4e3d]" size={24} />
+                  </div>
+                  <h3 className="font-semibold text-[#6b4e3d] mb-2">{feature.title}</h3>
+                  <p className="text-[#8b7355] text-sm leading-relaxed">{feature.description}</p>
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
         </section>
 
