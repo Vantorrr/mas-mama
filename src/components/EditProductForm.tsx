@@ -229,7 +229,7 @@ export default function EditProductForm({ product, categories }: EditProductForm
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-80 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-red-600"
                       title="Удалить фото"
                     >
                       <X size={14} />
@@ -245,7 +245,7 @@ export default function EditProductForm({ product, categories }: EditProductForm
                           newImages.unshift(movedImage);
                           setImages(newImages);
                         }}
-                        className="absolute -top-2 -left-2 p-1 bg-blue-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-blue-600 text-xs"
+                        className="absolute -top-2 -left-2 p-1 bg-blue-500 text-white rounded-full opacity-80 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-600 text-xs"
                         title="Сделать обложкой"
                       >
                         ★
