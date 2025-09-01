@@ -161,18 +161,22 @@ export default async function ProductPage({ params }: Props) {
               {/* Преимущества */}
               <div className="bg-white rounded-2xl p-6 shadow-md">
                 <h3 className="text-lg font-semibold text-[#6b4e3d] mb-4">Гарантии качества</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Shield className="text-amber-500" size={20} />
-                    <span className="text-sm text-[#8b7355]">Гарантия 1 год на все изделия</span>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Shield className="text-amber-500 mt-1" size={20} />
+                    <div>
+                      <p className="text-sm text-[#8b7355] leading-relaxed">
+                        Вся продукция мастерской проходит контроль качества. На изделия приобретенные в мастерской действует гарантия на производственный брак месяц со дня покупки.
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Truck className="text-amber-500" size={20} />
-                    <span className="text-sm text-[#8b7355]">Бесплатная доставка по России</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <RotateCcw className="text-amber-500" size={20} />
-                    <span className="text-sm text-[#8b7355]">Возврат в течение 14 дней</span>
+                  <div className="flex items-start gap-3">
+                    <Truck className="text-amber-500 mt-1" size={20} />
+                    <div>
+                      <p className="text-sm text-[#8b7355] leading-relaxed">
+                        Доставка осуществляется транспортными компаниями: Яндекс. Маркет, Сдек, Почта России согласно тарифам выбранной компании.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
