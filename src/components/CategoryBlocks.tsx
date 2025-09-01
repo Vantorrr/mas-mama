@@ -86,14 +86,14 @@ export default function CategoryBlocks() {
             </div>
           </a>
 
-          {/* Колье */}
-          <a href="/catalog?category=kolye" className="group block">
+          {/* Ожерелье */}
+          <a href="/catalog?category=ozherelya" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Slides slides={config.blocks.kolye?.slides || []} alt="Колье" />
+                <Slides slides={config.blocks.kolye?.slides || []} alt="Ожерелье" />
               </div>
               <div className="p-3 text-center">
-                <h3 className="font-semibold text-[#6b4e3d] text-sm">Колье</h3>
+                <h3 className="font-semibold text-[#6b4e3d] text-sm">Ожерелье</h3>
               </div>
             </div>
           </a>
@@ -110,14 +110,14 @@ export default function CategoryBlocks() {
             </div>
           </a>
 
-          {/* Медальоны */}
-          <a href="/catalog?category=medalony" className="group block">
+          {/* Кулоны */}
+          <a href="/catalog?category=kulony" className="group block">
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all">
               <div className="relative aspect-square overflow-hidden">
-                <Slides slides={config.blocks.medalony?.slides || []} alt="Медальоны" />
+                <Slides slides={config.blocks.medalony?.slides || []} alt="Кулоны" />
               </div>
               <div className="p-3 text-center">
-                <h3 className="font-semibold text-[#6b4e3d] text-sm">Медальоны</h3>
+                <h3 className="font-semibold text-[#6b4e3d] text-sm">Кулоны</h3>
               </div>
             </div>
           </a>
