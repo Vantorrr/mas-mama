@@ -156,3 +156,4 @@ export default function AdminAfishaPage() {
     </div>
   );
 }
+

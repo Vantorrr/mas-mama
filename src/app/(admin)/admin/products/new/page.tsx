@@ -1,14 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Upload, X, Plus } from 'lucide-react';
 import Link from 'next/link';
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  children: Array<{
+    id: number;
+    name: string;
+    slug: string;
+  }>;
+}
 
 export default function NewProductPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     sku: '',
@@ -18,6 +31,25 @@ export default function NewProductPage() {
     subcategoryId: '',
     inStock: true,
   });
+
+  // Загружаем категории при монтировании компонента
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/admin/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке категорий:', error);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -138,15 +170,48 @@ export default function NewProductPage() {
                 <select
                   required
                   value={formData.categoryId}
-                  onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    categoryId: e.target.value,
+                    subcategoryId: '' // Сбрасываем подкатегорию при смене категории
+                  }))}
                   className="w-full px-4 py-3 border border-[#e8dcc6] rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  disabled={isLoadingCategories}
                 >
-                  <option value="">Выберите категорию</option>
-                  <option value="1">Браслеты</option>
-                  <option value="2">Колье</option>
-                  <option value="3">Медальоны</option>
+                  <option value="">
+                    {isLoadingCategories ? 'Загрузка...' : 'Выберите категорию'}
+                  </option>
+                  {categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
                 </select>
               </div>
+              
+              {/* Подкатегории (показываем только если выбрана категория) */}
+              {formData.categoryId && (
+                <div>
+                  <label className="block text-sm font-medium text-[#6b4e3d] mb-2">
+                    Подкатегория
+                  </label>
+                  <select
+                    value={formData.subcategoryId}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subcategoryId: e.target.value }))}
+                    className="w-full px-4 py-3 border border-[#e8dcc6] rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  >
+                    <option value="">Без подкатегории</option>
+                    {categories
+                      .find(cat => cat.id === parseInt(formData.categoryId))
+                      ?.children.map(subcategory => (
+                        <option key={subcategory.id} value={subcategory.id}>
+                          {subcategory.name}
+                        </option>
+                      ))
+                    }
+                  </select>
+                </div>
+              )}
             </div>
             <div className="mt-6">
               <label className="block text-sm font-medium text-[#6b4e3d] mb-2">

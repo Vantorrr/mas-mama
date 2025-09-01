@@ -1,30 +1,35 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function GET() {
   try {
-    const body = await request.json();
-    const { name, slug, order, parentId, seoTitle, seoDescription, coverImageUrl } = body;
-
-    const category = await prisma.category.create({
-      data: {
-        name,
-        slug,
-        order: order || 0,
-        parentId: parentId || null,
-        seoTitle: seoTitle || null,
-        seoDescription: seoDescription || null,
-        coverImageUrl: coverImageUrl || null,
+    const categories = await prisma.category.findMany({
+      where: {
+        parentId: null, // Только основные категории
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        children: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+          orderBy: {
+            name: 'asc',
+          },
+        },
+      },
+      orderBy: {
+        order: 'asc',
       },
     });
 
-    return NextResponse.json({ success: true, category });
+    return NextResponse.json(categories);
   } catch (error) {
-    console.error('Error creating category:', error);
-    return NextResponse.json(
-      { error: 'Failed to create category' },
-      { status: 500 }
-    );
+    console.error('Ошибка при получении категорий:', error);
+    return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });
   }
 }
-
